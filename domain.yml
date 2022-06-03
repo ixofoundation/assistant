@@ -10,6 +10,26 @@ intents:
 - mood_great
 - mood_unhappy
 - msgSend
+slots: 
+  Address: 
+    type: text
+  Amount: 
+    type: float
+  Denom: 
+    type: text
+  FromAddress: 
+    type:text
+  Memo: 
+    type:text
+  ToAddress: 
+    type:text
+forms:
+ msgSend_form:
+ 	required_slots:
+    - ToAddress
+    - Denom
+    - Amount
+    - Memo
 responses:
   utter_greet:
   - text: Hey! How are you?
