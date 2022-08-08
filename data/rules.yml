@@ -2,12 +2,30 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: respond to greet
+  steps:
+  - intent: greet
+  - action: utter_greet_wallet
+
+- rule: respond to goodbye
   steps:
   - intent: goodbye
   - action: utter_goodbye
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: Activate msgSend form to collect information needed to do a Send Transaction
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - intent: msgSend
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: msgSend_form
+  - active_loop: msgSend_form
+
+- rule: Submit msgSend_form
+  condition:
+  - active_loop: msgSend_form
+  steps:
+  - action: msgSend_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_msgSend_form_submit

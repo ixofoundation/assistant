@@ -1,319 +1,232 @@
-version: '3.0'
-config:
-  store_entities_as_slots: true
-session_config:
-  session_expiration_time: 480
-  carry_over_slots_to_new_session: true
+version: "3.1"
+
 intents:
-- action
-- greet
-- goodbye
-- affirm
-- deny
-- mood_great
-- mood_unhappy
-- msgSend
-entities:
-- user_did
-- account_address
-- denom
-- currency
-- chain-id
-- amount
-- email
-- custom_response
-- entity_did
-- agent_role
-- message_type
-- device
-- validator
-- date_time
-- location
-- entity_type
-- transaction_type
-slots:
-  action:
-   type: any
-  address:
-   type: any
-  amount:
-   type: float
-  account_balance:
-   type: float
-  agent_role:
-   type: categorical
-   values:
-  - po
-  - sa
-  - ea
-  - ia
-  currency:
-     type: categorical
-   values:
-  - Fiat
-  - Crypto
-  transaction_type:
-   type: categorical
-   values:
-  - Send
-  - Transfer
-  - Delegate
-  - Stake
-  - Buy
-  - Sell
-  - Vote
-  - Undelegate
-  - Redelegate
-  - Swap
-  - Borrow
-  - Deposit
-  - Withdraw Rewards
-  - Bond
-  - Withdraw Share
-  - Draw-down
-  - Claim submission
-  - Claim Approval
-  - Update the entity status
-  denom:
-   type: categorical
-   values:
-  - uixo
-  - atom
-  - xusd
-  - regen
-  - bct
-  - usdc
-  entity_account_balance:
-    type: any
-  fromAddress:
-    type: any
-  account_balance:
-    type: any
-  memo:
-    type: text
-  toAddress:
-    type: any
-  delegator_address:
-    type: any
-  chain-id:
-    type: any
-  proposal_id:
-    type: any
-  denom_id:
-    type: any
-  validator:
-    type: any
-  token_id:
-    type: any
-  ixo_gas_fee:
-    type: any
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - msgSend
+
+actions:
+- validate_msgSend_form
+- action_msgSend_form_submit
+
 responses:
-  utter_ask_email:
-  - text: What's your email address?
-  utter_check_ok:
-  - buttons:
-    - payload: /affirm
-      title: 👍
-    - payload: /deny
-      title: 👎
-    text: Is that okay?
-  utter_ask_amount:
-  - text: What is the amount of {denom} you would like to {transaction_type}?
-  utter_get_started:
-    - text: Welcome
-  utter_bye:
-    - text: Bye
-  utter_entity_id:
-    - text: 'I understand that you would like to add {amount} IXO credits to your {entity_type}'
-  utter_add_credit:
-    - text: Let's go ahead with adding some IXO credits
-  utter_currency:
-    - text: 'This transaction will be made in {currency}'
-  utter_adding_credit:
-    - text: 'Now carefully check your order details, then sign the transaction.'
-  utter_wallet_balance_pre:
-    - text: Your current IXO balance is {account_balance}
-  utter_transaction_fee_ixo:
-    - text: You will be charges a standard Gas transaction fee of {ixo_gas_fee} IXO
-  utter_fuel_credit_refund_policy:
-    - text: Remember that you can always withdraw your unspent balances at a later
-        date
-  utter_got_it:
-    - text: Got it!
-  utter_ask_credit_entity_form_ixo_amount:
-    - text: Let's go ahead with adding {amount} IXO credits, or please enter a
-        different amount
-  utter_ask_credit_entity_form_to_wallet_address:
-    - text: The wallet address to which the IXO credits will be sent is {address}
-  utter_ask_credit_entity_form_confirm:
-    - text: I'm confirming that you want to send {amount} IXO credits to you {entity_type}. You
-        will still have the opportunity to review your order before submitting
-        the transaction
-      buttons:
-      - title: 👍
-          payload: /affirm
-      - title: Cancel
-          payload: /deny
-  utter_greet:
-    - text: Greetings, how may I assist you?
-  utter_credit_added:
-    - text: You have successfully added {amount} IXO
-        credits. The {entity_type} balance is now {entity_account_balance} IXO
-  utter_goodbye:
-    - text: Bye!
-  utter_send_complete:
-    - text: You have successfully Sent {amount} {denom} to {toAddress}
-  utter_transfer_complete:
-    - text: You have successfully Transferred {amount} {denom} to {toAddress} on the {chain-id} network
-  utter_delegation_complete:
-    - text: You have successfully Delegated {amount} {denom} to Validator {validator}
-  utter_undelegation_complete:
-    - text: You have successfully Undelegated {amount} {denom} from Validator {validator}
-  utter_redelegation_complete:
-    - text: You have successfully Re-delegated {amount} {denom} to Validator {validator}
-  utter_withdraw_rewards_complete:
-    - text: You have successfully withdrawn your rewards of {amount} {denom}. Now would you like to Delegate these tokens?
-  utter_noworries:
-    - text: You''re welcome :)
-  utter_ask_rephrase:
-    - text: I didn't quite understand that. Can you rephrase your request?
-  utter_ok:
-    - text: Ok!
+  utter_greet_wallet:
+  - text: Choose a transaction
+    buttons:
+    - title: Send
+      payload: "/msgSend"
+    - title: Transfer
+      payload: "/msgTransfer"
+    - title: Delegate
+      payload: "/msgDelegate"
+    - title: Receive
+      payload: "/showAccount"
+
   utter_default:
-    - text: 'Sorry, I didn''t get that. Could you rephrase?'
-  utter_ask_continue:
-    - text: Would you like to continue?
-  utter_ask_ixo_amount:
-    - text: What is the amount of IXO you would like to {transaction-type}?
-  utter_invalid_ixo_amount:
-    - text: The minimum value is 1 IXO credit, to cover transaction fees. Please
-        enter a higher amount
-  utter_got_it:
-    - text: Got it
-  utter_ask_to_wallet_address:
-    - text: To which wallet address would you like to {transaction_type}?
-  utter_ask_validator:
-    - text: For which Validatator would you like to {transaction_type}?
+  - text: I don't think I understand. Can you try providing more detail?
+  - text: um, what did you just say to me?
+  - text: beep, boop, don't understand
+
+  utter_chitchat/thanks:
+  - text: No problem!
+  - text: I have no choice but to help you.
+  - text: I try my best
+  
+  utter_chitchat/confirm_presence:
+  - text: yep I'm here.
+  - text: I'm still listening.
+  
+  utter_chitchat/capabilities:
+  - text: I can help you make a transaction.
+  
+  utter_chitchat/mood_great:
+  - text: Superb!
+  - text: right on
+  
+  utter_chitchat/mood_unhappy:
+  - text: sorry to hear that :(
+  - text: ok can you be nice to me
+  
+  utter_chitchat/bot_challenge:
+  - text: I'm a bot, and I have a lot to learn! IXOIXOIXO
+  
+  utter_chitchat/goodbye:
+  - text: bye bye
+  - text: c u l8er allig8er
+  - text: I X O
+
+  utter_goodbye:
+  - text: bye bye
+  - text: c u l8er allig8er
+  - text: I X O
+  
+  utter_ask_survey_form_rating:
+  - buttons:
+    - payload: '1'
+      title: '1'
+    - payload: '2'
+      title: '2'
+    - payload: '3'
+      title: '3'
+    - payload: '4'
+      title: '4'
+    - payload: '5'
+      title: '5'
+    text: On a scale of 1-5, how would you rate your conversation today?
+  utter_ask_survey_form_open_feedback:
+  - text: Is there any other feedback you can provide?
+  utter_survey_end:
+  - text: Thank you for the feedback!
+  utter_start_over:
+  - text: Ok, let's start over.
+  utter_open_feedback:
+  - text: Here's your lovely feedback - {open_feedback}
+  utter_ask_denom:
+  - text: Which token would you like to {transaction_type}?
+    buttons:
+    - payload: IXO
+      title: IXO
+    - payload: atom
+      title: atom
+    - payload: xusd
+      title: xusd
+    - payload: regen
+      title: regen
+    - payload: bct
+      title: bct
+    - payload: SDC
+      title: SDC
+  utter_valid_denom:
+  - text: Got it.
+  utter_invalid_denom:
+  - text: That denom {denom} value seems to be Invalid. Could you try again..
   utter_ask_amount:
-    - text: What is the amount you would like to {transaction_type?
+  - text: What is the amount you would like to {transaction_type}?
   utter_invalid_amount:
     - text: That input does not seem right. Please try again
   utter_valid_amount:
     - text: Got that, you would like to {transaction_type} an amount of {amount}
-  utter_ask_to_address:
-    - text: To which account address would you like to {transaction_type}?
-  utter_ready:
-    - text: Are you ready to make an Impact?
-  utter_positive:
-    - text: That's great to hear!
-  utter_sorry:
-    - text: Sorry to hear that!
-  utter_done:
-    - text: Done!
-  utter_invalid_to_address:
-    - text: That address seems to be Invalid. Could you try again...
-  utter_valid_to_address:
-    - text: Got it!
-  utter_custom_new_transaction:
-    - custom:
-        action: '{action}'
-        type: '{msg_type}'
-        chain-id: '{chain-id'
-        amount: '{amount}'
-        denom: '{denom}'
+  utter_ask_toAddress:
+  - text: What is the account address to which you would like to Send {denom} tokens?
+  utter_valid_toAddress:
+  - text: Got it.
+  utter_invalid_toAddress:
+  - text: That address seems to be Invalid. Could you try again...
+  utter_ask_memo:
+  - text: What is the memo for this transaction?
+  utter_valid_memo:
+  - text: Adding memo {memo} for the transaction...
+  utter_affirm_transaction:
+  - text: Initiating new transaction of type {transaction_type} for an amount of {amount} {denom} tokens to account {toAddress}
+    custom:
+      response:
+        trigger: proto_msg
+        type: cosmos-sdk/MsgSend
+        did: '{user_did}'
+      data:
+        value:
+        - amount: '{amount}'
+          denom: '{denom}'
         to_address: '{toAddress}'
-        memo: '{memo}'
-      __typename: CustomPayload
-  utter_confirm_transaction:
-    - text: You are about to {transaction_type} {amount} {token} to {toAddress}. Please confirm to sign the transaction
-       buttons:
-      - title: 👍
-          payload: /affirm
-      - title: Cancel
-          payload: /deny
-  utter_next:
-    - text: How may I assist you further?
-  utter_invalid_amount:
-    - text: That's not a valid amount. Please type a number
-  utter_ask_name:
-    - text: What name would you like to use for this application?
-  utter_ask_email:
-    - text: What is your email address?
-  utter_ask_reason:
-    - text: What is your main reason for applying to join?
-  utter_confirm_agent_entity:
-    - text: I understand that you would like to apply to become an agent on this {entity_type}
-  utter_agent_apply:
-    - text: Ok let's send through your application as {name} with email {email},
-        with your motivation to join
-  utter_custom_response_agent-apply:
-    - custom:
-        action: '{action}'
-        type: '{msg_type}'
-        name: '{name}'
-        emai: '{email}'
-        role: '{agent_role}'
-        reason: '{reason}'
-      __typename: CustomPayload
-  utter_sign_transaction:
-    - text: Please sign this transaction
-  utter_ask_agent_role:
-    - text: In what role would you like to join?
-      buttons:
-      - title: 'Service Provider '
-          type: postback
-          payload: '/apply{"agent_role":"SA"}'
-      - title: Investor
-          type: postback
-          payload: '/apply{"agent_role":"IA"}'
-      - title: Evaluator
-          type: postback
-          payload: '/apply{"agent_role":"EA"}'
-  utter_ask_update_entity_status:
-    - text: 'To what new status would you like to update your {entity_type}?'
-      buttons:
-      - title: Started
-          type: postback
-          payload: '/entity_status{"entity_status":"started"}'
-      - title: Funded
-          type: postback
-          payload: '/entity_status{"entity_status":"funded"}'
-      - title: Stopped
-          type: postback
-          payload: '/entity_status{"entity_status":"stopped"}'
-      - title: Pay Out
-          type: postback
-          payload: '/entity_status{"entity_status":"paidout"}'
-  utter_confirmentity_change:
-    - text: Now sign the message to change your {entity_type} status to {status}
-  utter_update_entity_status:
-    - custom:
-        action: '{action}'
-        type: '{msg_type}'
-        status: '{status}'
-actions:
-- action_trigger_response_selector
-- action_default_ask_affirmation
-- action_default_fallback
-- action_restart_with_button
+        from_address: '{fromAddress}'
+
+entities:
+- transaction_type
+- message_type
+- open_feedback
+- amount
+- amount-of-money
+- number
+- denom
+- toAddress
+- memo
+- fromAddress
+- user_did
+- chain-id
+
+slots:
+  fromAddress:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: fromAddress
+  user_did:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: user_did
+  chain-id:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: chain-id
+  transaction_type:
+    type: any
+    initial_value: Send
+    mappings:
+    - type: from_entity
+      entity: transaction_type
+  message_type:
+    type: any
+    initial_value: Send
+    mappings:
+    - type: from_entity
+      entity: message_type
+  open_feedback:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: open_feedback
+  amount:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: amount-of-money
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+    - type: from_entity
+      entity: amount
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+    - type: from_entity
+      entity: number
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+  denom:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: denom
+  toAddress:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: toAddress
+  memo:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: memo
+
 forms:
   msgSend_form:
     required_slots:
-      FromAddress:
-      - type: from_text
-      ToAddress:
-      - type: from_text
-      Denom:
-      - type: from_text
-      Amount:
-      - type: from_text
-      Memo:
-      - type: from_text
-  credit_entity_form:
-    required_slots:
-     entity_id:
-    - type: from_text
-     FromAddress:
-    - type: from_text
-     amount:
-    - type: from_text
+      - amount
+      - denom
+      - toAddress
+      - memo
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

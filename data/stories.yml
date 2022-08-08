@@ -2,29 +2,11 @@ version: "3.1"
 
 stories:
 
-- story: happy path
+- story: User stops msgSend_form
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
+  - active_loop: msgSend_form
   - intent: deny
-  - action: utter_goodbye
+  - action: utter_start_over
+  - action: utter_greet_wallet
+  - action: action_deactivate_loop
+  - active_loop: null
