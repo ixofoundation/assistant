@@ -79,9 +79,9 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate denom values. It will take selected values only."""
 
-        if slot_value.lower() in ACCEPTABLE_DENOM_VALUES:
+        if slot_value in ACCEPTABLE_DENOM_VALUES:
             dispatcher.utter_message(response="utter_valid_denom")
-            return {"denom": slot_value.lower()}
+            return {"denom": slot_value}
 
         dispatcher.utter_message(response="utter_invalid_denom")
         return {"denom": None}
