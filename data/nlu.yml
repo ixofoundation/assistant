@@ -1,23 +1,65 @@
-version: "3.0"
+version: "3.1"
+
 nlu:
-- intent: msgSend
-  examples: |
-    - Send tokens
 - intent: greet
   examples: |
+    - hey
     - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
 - intent: goodbye
   examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
     - bye
-- intent: mood_unhappy
-  examples: |
-    - hmm
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
 - intent: affirm
   examples: |
-    - yep
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
 - intent: deny
   examples: |
     - no
-- intent: mood_great
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: msgSend
   examples: |
-    - I'm happy
+    - Send 100 IXO
+    - send tokens
+    - send transaction
+    - Send 100 tokens
+    - I would like to send
+    - Pay someone
+    - msgSend 100 IXO
+    - Make a transaction
+    - Can I send some tokens?
+    - I want to send tokens
+    - I am testing sending
+    - can you show me how to send
