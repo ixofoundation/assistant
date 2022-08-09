@@ -40,6 +40,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade "pip<20"
+        pip install protobuf==3.19.4
         pip install rasa[full]==3.2.4
     - name: Train model
       run: |
