@@ -117,7 +117,7 @@ responses:
   utter_ask_memo:
   - text: What is the memo for this transaction?
   utter_valid_memo:
-  - text: Adding memo {memo} for the transaction...
+  - text: Added memo {memo} to this transaction. 
   utter_affirm_transaction:
   - text: Initiating new transaction of type {transaction_type} for an amount of {amount} {denom} tokens to account {toAddress}
     custom:
