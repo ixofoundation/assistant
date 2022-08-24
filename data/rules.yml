@@ -5,7 +5,7 @@ rules:
 - rule: respond to greet
   steps:
   - intent: greet
-  - action: utter_greet_wallet
+  - action: utter_greet
 
 - rule: respond to goodbye
   steps:
