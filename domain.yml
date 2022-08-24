@@ -102,7 +102,7 @@ actions:
 - action_msgSend_form_submit
 
 responses:
-  utter_greet:
+  utter_greet_wallet:
   - text: Choose a transaction.
     buttons:
     - title: Send
