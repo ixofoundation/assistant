@@ -1,2 +1,5 @@
 models/
 .rasa/
+actions/__pycache__/*
+addons/channels/__pycache__/*
+dev/*
