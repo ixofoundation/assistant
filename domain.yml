@@ -5,15 +5,105 @@ intents:
   - goodbye
   - affirm
   - deny
+  - account
+
   - msgSend
+
+entities:
+- transaction_type
+- message_type
+- open_feedback
+- amount
+- amount-of-money
+- number
+- denom
+- toAddress
+- memo
+- fromAddress
+- user_did
+- chain-id
+
+slots:
+  fromAddress:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: fromAddress
+  user_did:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: user_did
+  chain-id:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: chain-id
+  transaction_type:
+    type: any
+    initial_value: Send
+    mappings:
+    - type: from_entity
+      entity: transaction_type
+  message_type:
+    type: any
+    initial_value: Send
+    mappings:
+    - type: from_entity
+      entity: message_type
+  open_feedback:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: open_feedback
+  amount:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: amount-of-money
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+    - type: from_entity
+      entity: amount
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+    - type: from_entity
+      entity: number
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: amount
+  denom:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: denom
+  toAddress:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: toAddress
+  memo:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: memo
+
 
 actions:
 - validate_msgSend_form
 - action_msgSend_form_submit
 
 responses:
-  utter_greet_wallet:
-  - text: Choose a transaction
+  utter_greet:
+  - text: Choose a transaction.
     buttons:
     - title: Send
       payload: "/msgSend"
@@ -131,93 +221,6 @@ responses:
           denom: '{denom}'
         to_address: '{toAddress}'
         from_address: '{fromAddress}'
-
-entities:
-- transaction_type
-- message_type
-- open_feedback
-- amount
-- amount-of-money
-- number
-- denom
-- toAddress
-- memo
-- fromAddress
-- user_did
-- chain-id
-
-slots:
-  fromAddress:
-    type: any
-    mappings:
-    - type: from_entity
-      entity: fromAddress
-  user_did:
-    type: any
-    mappings:
-    - type: from_entity
-      entity: user_did
-  chain-id:
-    type: any
-    mappings:
-    - type: from_entity
-      entity: chain-id
-  transaction_type:
-    type: any
-    initial_value: Send
-    mappings:
-    - type: from_entity
-      entity: transaction_type
-  message_type:
-    type: any
-    initial_value: Send
-    mappings:
-    - type: from_entity
-      entity: message_type
-  open_feedback:
-    type: any
-    mappings:
-    - type: from_entity
-      entity: open_feedback
-  amount:
-    type: any
-    mappings:
-    - type: from_entity
-      entity: amount-of-money
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
-    - type: from_entity
-      entity: amount
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
-    - type: from_entity
-      entity: number
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
-  denom:
-    type: any
-    mappings:
-    - type: from_text
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: denom
-  toAddress:
-    type: any
-    mappings:
-    - type: from_text
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: toAddress
-  memo:
-    type: any
-    mappings:
-    - type: from_text
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: memo
 
 forms:
   msgSend_form:
