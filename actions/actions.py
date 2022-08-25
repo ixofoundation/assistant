@@ -10,7 +10,12 @@ from rasa_sdk.forms import FormValidationAction
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 
-ACCEPTABLE_DENOM_VALUES = ["IXO", "atom", "xusd", "regen", "bct", "SDC"]
+import logging
+
+logger = logging.getLogger(__name__)
+
+ACCEPTABLE_DENOM_VALUES = ["uixo", "atom", "xusd", "regen", "bct", "usdc"]
+ACCEPTABLE_AGENT_ROLES = ["SA", "IA", "EA", "none"]
 
 
 class ActionMsgSendFormSubmit(Action):
@@ -23,8 +28,33 @@ class ActionMsgSendFormSubmit(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(response="utter_affirm_transaction")
-
+        
+        transactionType = tracker.get_slot("transactionType")
+        
+        # Check if the transactionType is faucet
+        if transactionType == "faucet":
+            dispatcher.utter_message(response="utter_initiate_faucet")
+            # Get the denom slot
+            denom = tracker.get_slot("denom")
+            # Get the address slot
+            # fromAddress = tracker.get_slot("fromAddress")
+            toAddress = tracker.get_slot("toAddress")
+            amount = tracker.get_slot("amount")
+            # Send the faucet request
+            response = requests.post("https://testnet-faucet.ixo.earth/credit", json={"denom": denom, "address": toAddress})
+            # Check if the request was successful
+            # log the response
+            logger.info(f"Response from faucet: {response.text}, {response.status_code}, {response}")
+            
+            if response.status_code == 200:
+                # Send the response to the user
+                dispatcher.utter_message(response="utter_faucet_success")
+            else:
+                # Send the response to the user
+                dispatcher.utter_message(response="utter_faucet_fail")
+            dispatcher.utter_message(text=response.text)
+        else:
+            dispatcher.utter_message(response="utter_affirm_transaction")
         return [
             SlotSet('amount',None),
             SlotSet('denom',None),
@@ -65,6 +95,11 @@ class ValidateMsgSendForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> List[Text]:
+        
+        transactionType = tracker.get_slot("transactionType")
+        
+        if transactionType == "faucet":
+            return ["denom", "toAddress"]
 
         return [
             "amount",
@@ -98,9 +133,9 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate denom values. It will take selected values only."""
 
-        if slot_value in ACCEPTABLE_DENOM_VALUES:
+        if slot_value.lower() in ACCEPTABLE_DENOM_VALUES:
             dispatcher.utter_message(response="utter_valid_denom")
-            return {"denom": slot_value}
+            return {"denom": slot_value.lower()}
 
         dispatcher.utter_message(response="utter_invalid_denom")
         return {"denom": None}
@@ -192,7 +227,7 @@ class ValidateAgentApplicationForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate agentRole value."""
 
-        if slot_value:
+        if slot_value in ACCEPTABLE_AGENT_ROLES:
             dispatcher.utter_message(response="utter_valid_agentRole")
             return {"agentRole": slot_value}
 

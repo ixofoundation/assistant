@@ -32,7 +32,7 @@ rules:
 
 - rule: Activate agentApplication_form to collect information needed to do a Agent Application
   steps:
-  - intent: agentApplicationTrigger
+  - intent: agentApplication
   - action: action_deactivate_loop
   - active_loop: null
   - action: agentApplication_form

@@ -3,7 +3,7 @@ version: "3.1"
 intents:
   - account
   - accountTransactions
-  - agentApplicationTrigger
+  - agentApplication
   - affirm
   - backup
   - changePin
@@ -21,6 +21,7 @@ intents:
   - goodbye
   - greet
   - help
+  - inform
   - mobileBrowser
   - msgBuy
   - msgCreateAgent
@@ -51,6 +52,8 @@ intents:
 
 entities:
 - accountId
+- agentDid
+- agentName
 - agentRole
 - amount
 - amount-of-money
@@ -61,6 +64,7 @@ entities:
 - context
 - denom
 - email
+- entityType
 - fromAddress
 - messageType
 - memo
@@ -98,6 +102,19 @@ slots:
     mappings:
     - type: from_entity
       entity: accountId
+
+  agentDid:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: agentDid
+
+  entityType:
+    type: any
+    initial_value: IXO Platform
+    mappings:
+    - type: from_entity
+      entity: entityType
 
   state:
     type: any
@@ -165,6 +182,11 @@ slots:
   denom:
     type: any
     mappings:
+    - type: from_entity
+      entity: denom
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: denom
     - type: from_text
       conditions:
       - active_loop: msgSend_form
@@ -188,6 +210,8 @@ slots:
   agentName:
     type: any
     mappings:
+    - type: from_entity
+      entity: agentName
     - type: from_text
       conditions:
       - active_loop: agentApplication_form
@@ -214,10 +238,6 @@ slots:
       conditions:
       - active_loop: agentApplication_form
         requested_slot: email
-    - type: from_text
-      conditions:
-      - active_loop: agentApplication_form
-        requested_slot: email
 
   phoneNumber:
     type: any
@@ -229,10 +249,6 @@ slots:
         requested_slot: phoneNumber
     - type: from_entity
       entity: phone-number
-      conditions:
-      - active_loop: agentApplication_form
-        requested_slot: phone-number
-    - type: from_text
       conditions:
       - active_loop: agentApplication_form
         requested_slot: phoneNumber
@@ -257,6 +273,8 @@ responses:
     buttons:
     - title: Send
       payload: "/msgSend"
+    - title: Faucet Transfer
+      payload: '/msgSend{"transactionType":"faucet"}'
     - title: Transfer
       payload: "/msgTransfer"
     - title: Delegate
@@ -264,7 +282,7 @@ responses:
     - title: Receive
       payload: "/showAccount"
     - title: Agent Application
-      payload: "/agentApplicationTrigger"
+      payload: "/agentApplication"
 
   utter_default:
   - text: I don't think I understand. Can you try providing more detail?
@@ -328,18 +346,18 @@ responses:
   utter_ask_denom:
   - text: Which token would you like to {transactionType}?
     buttons:
-    - payload: IXO
+    - payload: uixo
       title: IXO
     - payload: atom
-      title: atom
+      title: ATOM
     - payload: xusd
-      title: xusd
+      title: XUSD
     - payload: regen
-      title: regen
+      title: REGEN
     - payload: bct
-      title: bct
-    - payload: SDC
-      title: SDC
+      title: BCT
+    - payload: usdc
+      title: USDC
   utter_valid_denom:
   - text: Got it.
   utter_invalid_denom:
@@ -351,7 +369,7 @@ responses:
   utter_valid_amount:
     - text: Got that, you would like to {transactionType} an amount of {amount}
   utter_ask_toAddress:
-  - text: What is the account address to which you would like to Send {denom} tokens?
+  - text: What is the account address to which you would like to {transactionType} {denom} tokens?
   utter_valid_toAddress:
   - text: Got it.
   utter_invalid_toAddress:
@@ -373,7 +391,13 @@ responses:
           denom: '{denom}'
         to_address: '{toAddress}'
         from_address: '{fromAddress}'
-  utter_ask_agent_application:
+  utter_ask_agentName:
+  - text: What is the Agent Name you want to register?
+  utter_valid_agentName:
+  - text: Got it.
+  utter_invalid_agentName:
+  - text: That Agent Name seems to be Invalid. Could you try again...
+  utter_ask_agentRole:
   - text: In what role would you like to contribute to this {entityType}?
     buttons:
     - payload: SA
@@ -384,14 +408,6 @@ responses:
       title: Evaluator
     - payload: none
       title: None!
-  utter_ask_agentName:
-  - text: What is the Agent Name you want to register?
-  utter_valid_agentName:
-  - text: Got it.
-  utter_invalid_agentName:
-  - text: That Agent Name seems to be Invalid. Could you try again...
-  utter_ask_agentRole:
-  - text: What is the Agent Role you want to register?
   utter_valid_agentRole:
   - text: Got it.
   utter_invalid_agentRole:
@@ -434,7 +450,12 @@ responses:
         - email: '{email}'
         - phoneNumber: '{phoneNumber}'
         - motivation: '{longAnswer}'
-
+  utter_faucet_success:
+  - text: You have successfully received {denom} tokens from the faucet.
+  utter_faucet_fail:
+  - text: Sorry, the faucet is currently out of {denom} tokens.
+  utter_initiate_faucet:
+  - text: Initiating new transaction of type {transactionType} for {denom} tokens to account {toAddress}
 forms:
   msgSend_form:
     required_slots:
