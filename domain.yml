@@ -3,6 +3,7 @@ version: "3.1"
 intents:
   - account
   - accountTransactions
+  - agentApplicationTrigger
   - affirm
   - backup
   - changePin
@@ -85,53 +86,63 @@ slots:
     mappings:
     - type: from_entity
       entity: context
+
   chain:
     type: any
     mappings:
     - type: from_entity
       entity: chain
+
   accountId:
     type: any
     mappings:
     - type: from_entity
       entity: accountId
+
   state:
     type: any
     mappings:
     - type: from_entity
       entity: state
+
   fromAddress:
     type: any
     mappings:
     - type: from_entity
       entity: fromAddress
+
   userDid:
     type: any
     mappings:
     - type: from_entity
       entity: userDid
+
   chainId:
     type: any
     mappings:
     - type: from_entity
       entity: chainId
+
   transactionType:
     type: any
     initial_value: Send
     mappings:
     - type: from_entity
       entity: transactionType
+
   messageType:
     type: any
     initial_value: Send
     mappings:
     - type: from_entity
       entity: messageType
+
   openFeedback:
     type: any
     mappings:
     - type: from_entity
       entity: openFeedback
+
   amount:
     type: any
     mappings:
@@ -150,6 +161,7 @@ slots:
       conditions:
       - active_loop: msgSend_form
         requested_slot: amount
+
   denom:
     type: any
     mappings:
@@ -157,6 +169,7 @@ slots:
       conditions:
       - active_loop: msgSend_form
         requested_slot: denom
+
   toAddress:
     type: any
     mappings:
@@ -250,6 +263,8 @@ responses:
       payload: "/msgDelegate"
     - title: Receive
       payload: "/showAccount"
+    - title: Agent Application
+      payload: "/agentApplicationTrigger"
 
   utter_default:
   - text: I don't think I understand. Can you try providing more detail?
@@ -371,14 +386,34 @@ responses:
       title: None!
   utter_ask_agentName:
   - text: What is the Agent Name you want to register?
+  utter_valid_agentName:
+  - text: Got it.
+  utter_invalid_agentName:
+  - text: That Agent Name seems to be Invalid. Could you try again...
   utter_ask_agentRole:
   - text: What is the Agent Role you want to register?
+  utter_valid_agentRole:
+  - text: Got it.
+  utter_invalid_agentRole:
+  - text: That Agent Role seems to be Invalid. Could you try again...
   utter_ask_email:
   - text: What email address would you like to register?
+  utter_valid_email:
+  - text: Got it.
+  utter_invalid_email:
+  - text: That email address seems to be Invalid. Could you try again...
   utter_ask_phoneNumber:
   - text: What is the phone number you would like to register?
+  utter_valid_phoneNumber:
+  - text: Got it.
+  utter_invalid_phoneNumber:
+  - text: That phone number seems to be Invalid. Could you try again...
   utter_ask_longAnswer:
   - text: In one sentence, what is your motivation for applying?
+  utter_valid_longAnswer:
+  - text: Got it.
+  utter_invalid_longAnswer:
+  - text: That answer seems to be Invalid. Could you try again...
   utter_ask_agent_motivation:
   - text: In one sentence, what is your motivation for applying?
   utter_confirm_agent_phone:

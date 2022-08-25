@@ -29,3 +29,21 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_msgSend_form_submit
+
+- rule: Activate agentApplication_form to collect information needed to do a Agent Application
+  steps:
+  - intent: agentApplicationTrigger
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: agentApplication_form
+  - active_loop: agentApplication_form
+
+- rule: Submit agentApplication_form
+  condition:
+  - active_loop: agentApplication_form
+  steps:
+  - action: agentApplication_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_agentApplication_form_submit

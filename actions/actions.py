@@ -32,6 +32,25 @@ class ActionMsgSendFormSubmit(Action):
             SlotSet('memo',None)
             ]
 
+class ActionAgentApplicationFormSubmit(Action):
+    """Action to be executed at the end of agentApplication Form """
+
+    def name(self) -> Text:
+        return "action_agentApplication_form_submit"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(response="utter_affirm_agent_application")
+
+        return [
+            SlotSet('agentName',None),
+            SlotSet('agentRole',None),
+            SlotSet('email',None),
+            SlotSet('phoneNumber',None),
+            SlotSet('longAnswer', None)
+            ]
 
 class ValidateMsgSendForm(FormValidationAction):
     """This class validates the msgSend Form Input Fields"""
@@ -124,3 +143,108 @@ class ValidateMsgSendForm(FormValidationAction):
 
         dispatcher.utter_message(response="utter_valid_memo")
         return {"memo": slot_value}
+
+
+class ValidateAgentApplicationForm(FormValidationAction):
+    """This class validates the fields against the agentApplication Form"""
+
+    def name(self) -> Text:
+        return "validate_agentApplication_form"
+
+    async def required_slots(
+        self,
+        domain_slots: List[Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> List[Text]:
+
+        return [
+            "agentName",
+            "agentRole",
+            "email",
+            "phoneNumber",
+            "longAnswer"
+        ]
+
+    def validate_agentName(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate agentName value."""
+
+        if slot_value:
+            dispatcher.utter_message(response="utter_valid_agentName")
+            return {"agentName": slot_value}
+
+        dispatcher.utter_message(response="utter_invalid_agentName")
+        return {"agentName": None}
+
+    def validate_agentRole(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate agentRole value."""
+
+        if slot_value:
+            dispatcher.utter_message(response="utter_valid_agentRole")
+            return {"agentRole": slot_value}
+
+        dispatcher.utter_message(response="utter_invalid_agentRole")
+        return {"agentRole": None}
+
+    def validate_email(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate email value."""
+
+        if slot_value:
+            dispatcher.utter_message(response="utter_valid_email")
+            return {"email": slot_value}
+
+        dispatcher.utter_message(response="utter_invalid_email")
+        return {"email": None}
+
+    def validate_phoneNumber(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate phoneNumber value."""
+
+        if slot_value:
+            dispatcher.utter_message(response="utter_valid_phoneNumber")
+            return {"phoneNumber": slot_value}
+
+        dispatcher.utter_message(response="utter_invalid_phoneNumber")
+        return {"phoneNumber": None}
+
+    def validate_longAnswer(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate longAnswer value."""
+
+        if slot_value:
+            dispatcher.utter_message(response="utter_valid_longAnswer")
+            return {"longAnswer": slot_value}
+
+        dispatcher.utter_message(response="utter_invalid_longAnswer")
+        return {"longAnswer": None}
+    
+    
