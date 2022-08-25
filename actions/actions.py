@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 ACCEPTABLE_DENOM_VALUES = ["uixo", "atom", "xusd", "regen", "bct", "usdc"]
 ACCEPTABLE_AGENT_ROLES = ["SA", "IA", "EA", "none"]
 
+logger.info("Loading actions...")
+
 
 class ActionMsgSendFormSubmit(Action):
     """Action to be executed at the end of msgSend Form """
@@ -28,11 +30,14 @@ class ActionMsgSendFormSubmit(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        logger.info("Running action_msgSend_form_submit...")
         
         transactionType = tracker.get_slot("transactionType")
         
         # Check if the transactionType is faucet
         if transactionType == "faucet":
+            logger.info("Transaction type is faucet")
+            
             dispatcher.utter_message(response="utter_initiate_faucet")
             # Get the denom slot
             denom = tracker.get_slot("denom")
@@ -98,6 +103,8 @@ class ValidateMsgSendForm(FormValidationAction):
         
         transactionType = tracker.get_slot("transactionType")
         
+        logger.info(f"transactionType: {transactionType}")
+        
         if transactionType == "faucet":
             return ["denom", "toAddress"]
 
@@ -117,6 +124,8 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate amount value."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         if str(slot_value).isdigit():
             dispatcher.utter_message(response="utter_valid_amount")
             return {"amount": slot_value}
@@ -133,6 +142,8 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate denom values. It will take selected values only."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         if slot_value.lower() in ACCEPTABLE_DENOM_VALUES:
             dispatcher.utter_message(response="utter_valid_denom")
             return {"denom": slot_value.lower()}
@@ -149,6 +160,8 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate toAddress by checking against cosmos network."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         domain_chain = "testnet"
         endpoint = "cosmos/auth/v1beta1/accounts"
         chain_url = f"https://{domain_chain}.ixo.world/{endpoint}/{slot_value}"
@@ -176,6 +189,8 @@ class ValidateMsgSendForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate memo value."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         dispatcher.utter_message(response="utter_valid_memo")
         return {"memo": slot_value}
 
@@ -210,7 +225,9 @@ class ValidateAgentApplicationForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate agentName value."""
-
+        
+        logger.info(f"slot_value: {slot_value}")
+        
         if slot_value:
             dispatcher.utter_message(response="utter_valid_agentName")
             return {"agentName": slot_value}
@@ -226,6 +243,8 @@ class ValidateAgentApplicationForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate agentRole value."""
+        
+        logger.info(f"slot_value: {slot_value}")
 
         if slot_value in ACCEPTABLE_AGENT_ROLES:
             dispatcher.utter_message(response="utter_valid_agentRole")
@@ -243,6 +262,8 @@ class ValidateAgentApplicationForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate email value."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         if slot_value:
             dispatcher.utter_message(response="utter_valid_email")
             return {"email": slot_value}
@@ -259,6 +280,8 @@ class ValidateAgentApplicationForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate phoneNumber value."""
 
+        logger.info(f"slot_value: {slot_value}")
+        
         if slot_value:
             dispatcher.utter_message(response="utter_valid_phoneNumber")
             return {"phoneNumber": slot_value}
@@ -274,6 +297,8 @@ class ValidateAgentApplicationForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate longAnswer value."""
+        
+        logger.info(f"slot_value: {slot_value}")
 
         if slot_value:
             dispatcher.utter_message(response="utter_valid_longAnswer")
