@@ -1,61 +1,165 @@
 version: "3.1"
 
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
   - account
-
+  - accountTransactions
+  - agentApplication
+  - affirm
+  - backup
+  - changePin
+  - claim
+  - claimDashboard
+  - claimInstruction
+  - claimSummary
+  - create
+  - deny
+  - editUsername
+  - evaluate
+  - exportKey
+  - faq
+  - funFact
+  - goodbye
+  - greet
+  - help
+  - inform
+  - mobileBrowser
+  - msgBuy
+  - msgCreateAgent
+  - msgDelegate
+  - msgRedelegate
+  - msgRegisterDid
+  - msgSell
   - msgSend
+  - msgSwap
+  - msgTransfer
+  - msgUpdateAgentStatus
+  - msgUndelegate
+  - msgVote
+  - msgWithdrawReward
+  - msgWithdrawShare
+  - myBonds
+  - myCoins
+  - myCollections
+  - myClaims
+  - myProjects
+  - myStakes
+  - nameAccount
+  - portfolios
+  - removeAccount
+  - settings
+  - stakeSummary
+  - user
 
 entities:
-- transaction_type
-- message_type
-- open_feedback
+- accountId
+- agentDid
+- agentName
+- agentRole
 - amount
 - amount-of-money
-- number
+- chain
+- chainId
+- claimTemplateId
+- claimPropertyId
+- context
 - denom
-- toAddress
-- memo
+- email
+- entityType
 - fromAddress
-- user_did
-- chain-id
+- messageType
+- memo
+- name
+- number
+- openFeedback
+- phone-number
+- phoneNumber
+- registered
+- state
+- title
+- toAddress
+- transactionType
+- uiPlaceholder
+- uiWidget
+- url
+- userDid
+- userName
 
 slots:
+  context:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: context
+
+  chain:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: chain
+
+  accountId:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: accountId
+
+  agentDid:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: agentDid
+
+  entityType:
+    type: any
+    initial_value: IXO Platform
+    mappings:
+    - type: from_entity
+      entity: entityType
+
+  state:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: state
+
   fromAddress:
     type: any
     mappings:
     - type: from_entity
       entity: fromAddress
-  user_did:
+
+  userDid:
     type: any
     mappings:
     - type: from_entity
-      entity: user_did
-  chain-id:
+      entity: userDid
+
+  chainId:
     type: any
     mappings:
     - type: from_entity
-      entity: chain-id
-  transaction_type:
-    type: any
-    initial_value: Send
-    mappings:
-    - type: from_entity
-      entity: transaction_type
-  message_type:
+      entity: chainId
+
+  transactionType:
     type: any
     initial_value: Send
     mappings:
     - type: from_entity
-      entity: message_type
-  open_feedback:
+      entity: transactionType
+
+  messageType:
+    type: any
+    initial_value: Send
+    mappings:
+    - type: from_entity
+      entity: messageType
+
+  openFeedback:
     type: any
     mappings:
     - type: from_entity
-      entity: open_feedback
+      entity: openFeedback
+
   amount:
     type: any
     mappings:
@@ -74,13 +178,20 @@ slots:
       conditions:
       - active_loop: msgSend_form
         requested_slot: amount
+
   denom:
     type: any
     mappings:
+    - type: from_entity
+      entity: denom
+      conditions:
+      - active_loop: msgSend_form
+        requested_slot: denom
     - type: from_text
       conditions:
       - active_loop: msgSend_form
         requested_slot: denom
+
   toAddress:
     type: any
     mappings:
@@ -96,10 +207,65 @@ slots:
       - active_loop: msgSend_form
         requested_slot: memo
 
+  agentName:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: agentName
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentName
+  
+  agentRole:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: agentRole
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentRole
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentRole
+
+  email:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: email
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: email
+
+  phoneNumber:
+    type: any
+    mappings:
+    - type: from_entity
+      entity: phoneNumber
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: phoneNumber
+    - type: from_entity
+      entity: phone-number
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: phoneNumber
+  
+  longAnswer:
+    type: any
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: longAnswer
 
 actions:
 - validate_msgSend_form
 - action_msgSend_form_submit
+- validate_agentApplication_form
+- action_agentApplication_form_submit
 
 responses:
   utter_greet_wallet:
@@ -107,12 +273,16 @@ responses:
     buttons:
     - title: Send
       payload: "/msgSend"
+    - title: Faucet Transfer
+      payload: '/msgSend{"transactionType":"faucet"}'
     - title: Transfer
       payload: "/msgTransfer"
     - title: Delegate
       payload: "/msgDelegate"
     - title: Receive
       payload: "/showAccount"
+    - title: Agent Application
+      payload: "/agentApplication"
 
   utter_default:
   - text: I don't think I understand. Can you try providing more detail?
@@ -165,41 +335,41 @@ responses:
     - payload: '5'
       title: '5'
     text: On a scale of 1-5, how would you rate your conversation today?
-  utter_ask_survey_form_open_feedback:
+  utter_ask_survey_form_openFeedback:
   - text: Is there any other feedback you can provide?
   utter_survey_end:
   - text: Thank you for the feedback!
   utter_start_over:
   - text: Ok, let's start over.
-  utter_open_feedback:
-  - text: Here's your lovely feedback - {open_feedback}
+  utter_openFeedback:
+  - text: Here's your lovely feedback - {openFeedback}
   utter_ask_denom:
-  - text: Which token would you like to {transaction_type}?
+  - text: Which token would you like to {transactionType}?
     buttons:
-    - payload: IXO
+    - payload: uixo
       title: IXO
     - payload: atom
-      title: atom
+      title: ATOM
     - payload: xusd
-      title: xusd
+      title: XUSD
     - payload: regen
-      title: regen
+      title: REGEN
     - payload: bct
-      title: bct
-    - payload: SDC
-      title: SDC
+      title: BCT
+    - payload: usdc
+      title: USDC
   utter_valid_denom:
   - text: Got it.
   utter_invalid_denom:
   - text: That denom {denom} value seems to be Invalid. Could you try again..
   utter_ask_amount:
-  - text: What is the amount you would like to {transaction_type}?
+  - text: What is the amount you would like to {transactionType}?
   utter_invalid_amount:
     - text: That input does not seem right. Please try again
   utter_valid_amount:
-    - text: Got that, you would like to {transaction_type} an amount of {amount}
+    - text: Got that, you would like to {transactionType} an amount of {amount}
   utter_ask_toAddress:
-  - text: What is the account address to which you would like to Send {denom} tokens?
+  - text: What is the account address to which you would like to {transactionType} {denom} tokens?
   utter_valid_toAddress:
   - text: Got it.
   utter_invalid_toAddress:
@@ -209,19 +379,83 @@ responses:
   utter_valid_memo:
   - text: Added memo {memo} to this transaction... 
   utter_affirm_transaction:
-  - text: Initiating new transaction of type {transaction_type} for an amount of {amount} {denom} tokens to account {toAddress}
+  - text: Initiating new transaction of type {transactionType} for an amount of {amount} {denom} tokens to account {toAddress}
     custom:
       response:
         trigger: proto_msg
         type: cosmos-sdk/MsgSend
-        did: '{user_did}'
+        did: '{userDid}'
       data:
         value:
         - amount: '{amount}'
           denom: '{denom}'
         to_address: '{toAddress}'
         from_address: '{fromAddress}'
-
+  utter_ask_agentName:
+  - text: What is the Agent Name you want to register?
+  utter_valid_agentName:
+  - text: Got it.
+  utter_invalid_agentName:
+  - text: That Agent Name seems to be Invalid. Could you try again...
+  utter_ask_agentRole:
+  - text: In what role would you like to contribute to this {entityType}?
+    buttons:
+    - payload: SA
+      title: Implementer
+    - payload: IA
+      title: Investor
+    - payload: EA
+      title: Evaluator
+    - payload: none
+      title: None!
+  utter_valid_agentRole:
+  - text: Got it.
+  utter_invalid_agentRole:
+  - text: That Agent Role seems to be Invalid. Could you try again...
+  utter_ask_email:
+  - text: What email address would you like to register?
+  utter_valid_email:
+  - text: Got it.
+  utter_invalid_email:
+  - text: That email address seems to be Invalid. Could you try again...
+  utter_ask_phoneNumber:
+  - text: What is the phone number you would like to register?
+  utter_valid_phoneNumber:
+  - text: Got it.
+  utter_invalid_phoneNumber:
+  - text: That phone number seems to be Invalid. Could you try again...
+  utter_ask_longAnswer:
+  - text: In one sentence, what is your motivation for applying?
+  utter_valid_longAnswer:
+  - text: Got it.
+  utter_invalid_longAnswer:
+  - text: That answer seems to be Invalid. Could you try again...
+  utter_ask_agent_motivation:
+  - text: In one sentence, what is your motivation for applying?
+  utter_confirm_agent_phone:
+  - text: Is the phone number you would like to register {phoneNumber}?
+  utter_confirm_agent_email:
+  - text: Is the email address you would like to register {email}?
+  utter_affirm_agent_application: 
+  - text: Please sign to submit your application to join this {entityType}
+    custom:
+      response:
+        trigger: cellnode_msg
+        type: project/CreateAgent
+        did: '{userDid}'
+      data:
+        value:
+        - agentRole: '{agentRole}'
+        - name: '{agentName}'
+        - email: '{email}'
+        - phoneNumber: '{phoneNumber}'
+        - motivation: '{longAnswer}'
+  utter_faucet_success:
+  - text: You have successfully received {denom} tokens from the faucet.
+  utter_faucet_fail:
+  - text: Sorry, the faucet is currently out of {denom} tokens.
+  utter_initiate_faucet:
+  - text: Initiating new transaction of type {transactionType} for {denom} tokens to account {toAddress}
 forms:
   msgSend_form:
     required_slots:
@@ -229,6 +463,13 @@ forms:
       - denom
       - toAddress
       - memo
+  agentApplication_form:
+    required_slots:
+     - agentRole
+     - agentName
+     - email
+     - phoneNumber
+     - longAnswer
 
 session_config:
   session_expiration_time: 60
