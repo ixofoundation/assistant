@@ -11,6 +11,7 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -44,28 +45,43 @@ class ActionMsgSendFormSubmit(Action):
             # Get the address slot
             # fromAddress = tracker.get_slot("fromAddress")
             toAddress = tracker.get_slot("toAddress")
-            amount = tracker.get_slot("amount")
-            # Send the faucet request
-            response = requests.post("https://testnet-faucet.ixo.earth/credit", json={"denom": denom, "address": toAddress})
-            # Check if the request was successful
-            # log the response
-            logger.info(f"Response from faucet: {response.text}, {response.status_code}, {response}")
+            # amount = tracker.get_slot("amount")
+            # Send await the faucet request
+            url = "https://testnet-faucet.ixo.earth/credit"
             
-            if response.status_code == 200:
-                # Send the response to the user
-                dispatcher.utter_message(response="utter_faucet_success")
-            else:
-                # Send the response to the user
-                dispatcher.utter_message(response="utter_faucet_fail")
-            dispatcher.utter_message(text=response.text)
+            
+            payload = json.dumps({
+                "denom": f"{denom}",
+                "address": f"{toAddress}"
+            })
+            
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            
+            logger.info(f"Sending request to {url} with payload {payload}")
+            
+            try:
+                response = requests.request("POST", url, headers=headers, data=payload)
+
+                logger.info(f"Response from faucet: {response.text}, {response.status_code}, {response}")
+                if response.status_code == 200:
+                    dispatcher.utter_message(response="utter_faucet_success")
+                else:
+                    dispatcher.utter_message(text="Response from Faucet: " + response.text)
+            except Exception as e:
+                logger.error(f"Error sending faucet request: {e}")
+                dispatcher.utter_message(text=f"We are unable to serve your request at this time due to {e}")
         else:
             dispatcher.utter_message(response="utter_affirm_transaction")
+
         return [
             SlotSet('amount',None),
             SlotSet('denom',None),
             SlotSet('toAddress',None),
             SlotSet('memo',None)
             ]
+
 
 class ActionAgentApplicationFormSubmit(Action):
     """Action to be executed at the end of agentApplication Form """
@@ -105,15 +121,17 @@ class ValidateMsgSendForm(FormValidationAction):
         
         logger.info(f"transactionType: {transactionType}")
         
+        required_slots = domain_slots.copy()
+        
+        logger.info("Total Slots: {}".format(required_slots))
+        
         if transactionType == "faucet":
-            return ["denom", "toAddress"]
-
-        return [
-            "amount",
-            "denom",
-            "toAddress",
-            "memo"
-        ]
+            required_slots.remove("amount")
+            required_slots.remove("memo")
+        else:
+            required_slots = ["amount", "denom", "toAddress", "memo"]
+        logger.info(f"New Slots for {transactionType}: {required_slots}")
+        return required_slots
 
     def validate_amount(
         self,
