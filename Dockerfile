@@ -6,7 +6,7 @@ WORKDIR /app
 
 USER root
 
-# RUN pip install -r requirements-actions.txt
+RUN pip install -r requirements-actions.txt
 
 COPY ./actions /app/actions
 
