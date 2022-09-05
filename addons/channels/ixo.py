@@ -4,6 +4,7 @@ from typing import Any, Awaitable, Callable, Dict, Iterable, List, Optional, Tex
 
 import rasa.core.channels.channel
 from rasa.core.channels.channel import InputChannel, OutputChannel, UserMessage
+from rasa.core.channels.socketio import SocketIOOutput, SocketIOInput, SocketBlueprint
 import rasa.shared.utils.io
 from sanic import Blueprint, response, Sanic
 from sanic.request import Request
@@ -15,37 +16,15 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_DELAY_IN_MESSAGES = 2 # seconds
 
-class SocketBlueprint(Blueprint):
-    def __init__(
-        self, sio: AsyncServer, socketio_path: Text, *args: Any, **kwargs: Any
-    ) -> None:
-        """Creates a :class:`sanic.Blueprint` for routing socketio connenctions.
-
-        :param sio: Instance of :class:`socketio.AsyncServer` class
-        :param socketio_path: string indicating the route to accept requests on.
-        """
-        super().__init__(*args, **kwargs)
-        self.ctx.sio = sio
-        self.ctx.socketio_path = socketio_path
-
-
-    def register(self, app: Sanic, options: Dict[Text, Any]) -> None:
-        """Attach the Socket.IO webserver to the given Sanic instance.
-
-        :param app: Instance of :class:`sanic.app.Sanic` class
-        :param options: Options to be used while registering the
-            blueprint into the app.
-        """
-        self.ctx.sio.attach(app, self.ctx.socketio_path)
-        super().register(app, options)
-
-
-class IxoOutput(OutputChannel):
+class IxoOutput(SocketIOOutput):
     @classmethod
     def name(cls) -> Text:
         return "ixo"
 
     def __init__(self, sio: AsyncServer, bot_message_evt: Text, message_delay: int) -> None:
+        
+        super().__init__(sio, bot_message_evt)
+        
         self.sio = sio
         self.bot_message_evt = bot_message_evt
         self.message_delay = message_delay

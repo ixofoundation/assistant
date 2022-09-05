@@ -22,6 +22,7 @@ intents:
   - greet
   - help
   - inform
+  - knowMore
   - mobileBrowser
   - msgBuy
   - msgCreateAgent
@@ -85,6 +86,38 @@ entities:
 - userName
 
 slots:
+
+  retrievalAnswer:
+    type: any
+    mappings:
+    - type: custom
+
+  retrievalLongAnswer:
+    type: any
+    mappings:
+    - type: custom
+
+  retrievalKnowledgeResourceLink:
+    type: any
+    mappings:
+    - type: custom
+  
+  retrievalLinkTitle:
+    type: any
+    mappings:
+    - type: custom
+  
+  retrievalIntent:
+    type: any
+    mappings:
+    - type: custom
+
+  msgSend_global_slot:
+    type: any
+    mappings:
+    - type: custom
+      action: action_msgSend_form_global_slot
+
   context:
     type: any
     mappings:
@@ -163,50 +196,22 @@ slots:
   amount:
     type: any
     mappings:
-    - type: from_entity
-      entity: amount-of-money
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
-    - type: from_entity
-      entity: amount
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
-    - type: from_entity
-      entity: number
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: amount
+    - type: custom
 
   denom:
     type: any
     mappings:
-    - type: from_entity
-      entity: denom
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: denom
-    - type: from_text
-      not_intent: msgSend
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: denom
+    - type: custom
 
   toAddress:
     type: any
     mappings:
-    - type: from_text
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: toAddress
+    - type: custom
+
   memo:
     type: any
     mappings:
-    - type: from_text
-      conditions:
-      - active_loop: msgSend_form
-        requested_slot: memo
+    - type: custom
 
   agentName:
     type: any
@@ -263,19 +268,27 @@ slots:
         requested_slot: longAnswer
 
 actions:
+- action_faq
+- action_faq_followup
+- action_greet_wallet
+- action_msgSend_form_global_slot
 - validate_msgSend_form
 - action_msgSend_form_submit
 - validate_agentApplication_form
 - action_agentApplication_form_submit
 
 responses:
+
+  utter_form_interrupted:
+  - text: "Form was already active in conversation. Closing it now due to interruption. Please start again."
+
   utter_greet_wallet:
   - text: Choose a transaction.
     buttons:
     - title: Send
       payload: "/msgSend"
     - title: Faucet Transfer
-      payload: '/msgSend{"transactionType":"faucet"}'
+      payload: '/msgSend{{"transactionType":"faucet"}}'
     - title: Transfer
       payload: "/msgTransfer"
     - title: Delegate
@@ -360,7 +373,7 @@ responses:
     - payload: usdc
       title: USDC
   utter_valid_denom:
-  - text: Got it.
+  - text: Got that you want to {transactionType} {denom}.
   utter_invalid_denom:
   - text: That denom {denom} value seems to be Invalid. Could you try again..
   utter_ask_amount:
@@ -372,7 +385,7 @@ responses:
   utter_ask_toAddress:
   - text: What is the account address to which you would like to {transactionType} {denom} tokens?
   utter_valid_toAddress:
-  - text: Got it.
+  - text: Got it that you would like to {transactionType} tokens to {toAddress}
   utter_invalid_toAddress:
   - text: That address seems to be Invalid. Could you try again...
   utter_ask_memo:
@@ -459,12 +472,16 @@ responses:
   - text: Initiating new transaction of type {transactionType} for {denom} tokens to account {toAddress}
 forms:
   msgSend_form:
+    ignored_intents:
+    - greet
     required_slots:
       - denom
       - amount
       - toAddress
       - memo
   agentApplication_form:
+    ignored_intents:
+    - greet
     required_slots:
      - agentRole
      - agentName
