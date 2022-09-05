@@ -122,12 +122,20 @@ class ActionFaqFollowup(Action):
         
         long_answer = tracker.get_slot("retrievalLongAnswer")
         knowledge_resource_link = tracker.get_slot("retrievalKnowledgeResourceLink")
+        knowledge_resource_link_title = tracker.get_slot("retrievalLinkTitle")
+        flag = False
+        
         if long_answer:
+            flag = True
             dispatcher.utter_message(text=long_answer)
-            if knowledge_resource_link:
+        if knowledge_resource_link:
+            flag = True
+            if knowledge_resource_link_title:
+                dispatcher.utter_message(text=f"Visit here [{knowledge_resource_link_title}]({knowledge_resource_link}) for more information.")    
+            else:
                 dispatcher.utter_message(text=f"Visit this url for more information: {knowledge_resource_link}")    
         
-        else:
+        if not flag:
             dispatcher.utter_message(text="Sorry, I don't have any more information on that.")
 
         return []
