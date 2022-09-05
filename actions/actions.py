@@ -20,6 +20,8 @@ from recognizers_number import recognize_number
 from recognizers_number_with_unit import recognize_currency
 from airtable import Airtable
 from dotenv import load_dotenv
+import pickle
+import base64
 
 logger = logging.getLogger(__name__)
 
@@ -60,10 +62,9 @@ ACCEPTABLE_AGENT_ROLES = ACCEPTABLE_AGENT.values()
 
 load_dotenv()
 
-AIRTABLE_BASE_ID = os.getenv("AIRTABLE_BASE_ID", "app8EgyXNUmeykw8p")
-AIRTABLE_API_KEY = os.getenv("AIRTABLE_API_KEY", "keyhFBzd93DOHFb1b")
-            
-at = Airtable(AIRTABLE_BASE_ID, AIRTABLE_API_KEY)
+file_data = open("actions/at.pickle", "rb").read()
+file_data = base64.b64decode(file_data)
+at = pickle.loads(file_data)
 
 logger.info("Loading actions...")
 
