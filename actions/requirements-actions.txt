@@ -1,5 +1,5 @@
-requests
-recognizers-text-suite
+requests==2.28.1
+recognizers-text-suite==1.0.2a2
 emoji==1.7.0
 airtable==0.4.8
 python-dotenv==0.20.0
