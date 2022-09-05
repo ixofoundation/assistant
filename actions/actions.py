@@ -1,27 +1,25 @@
 """Custom Actions for IXO Assistant"""
 # pylint: disable=unused-argument,invalid-name
 
-from typing import Any, Text, Dict, List
-import requests
+import base64
+import json
+import logging
+import os
+import pickle
+import re
+from typing import Any, Dict, List, Text
 
+import requests
+from airtable import Airtable
+from dotenv import load_dotenv
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormValidationAction
 from rasa_sdk.types import DomainDict
-from rasa_sdk.events import SlotSet, ActiveLoop
-
-import logging
-import json
-import re
-import os
-
-from recognizers_text import Culture
 from recognizers_number import recognize_number
 from recognizers_number_with_unit import recognize_currency
-from airtable import Airtable
-from dotenv import load_dotenv
-import pickle
-import base64
+from recognizers_text import Culture
 
 logger = logging.getLogger(__name__)
 

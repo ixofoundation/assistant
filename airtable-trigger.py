@@ -1,12 +1,20 @@
+import base64
 import logging
-from typing import Any, List
-from pathlib import Path
+import pickle
 from collections import OrderedDict
+from pathlib import Path
+from typing import Any, List
+
 from ruamel.yaml import YAML
-from ruamel.yaml.scalarstring import LiteralScalarString
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
+from ruamel.yaml.scalarstring import LiteralScalarString
+
 yaml = YAML()
 from airtable import Airtable
+
+file_data = open("at.pickle", "rb").read()
+file_data = base64.b64decode(file_data)
+airtable = pickle.loads(file_data)
 
 def add_training_examples_to_yaml(
     yaml_path: Path, intent: str, training_examples: List[str]
@@ -48,7 +56,7 @@ def add_training_examples_to_yaml(
         yaml.dump(data, f)
 
 def sync_airtable_to_yaml():
-    airtable = Airtable("app8EgyXNUmeykw8p", "keyhFBzd93DOHFb1b")
+    
     intent = "Buy"
     records = airtable.iterate(
         "faq-response",
