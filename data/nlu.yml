@@ -63,3 +63,21 @@ nlu:
     - I want to send tokens
     - I am testing sending
     - can you show me how to send
+    - Sample memo
+    - sending this to my friend
+    - I am sending this to my friend
+    - ixo
+    - 100
+    - 100 IXO
+    - 100 tokens
+    - 100 tokens to my friend
+  
+- intent: knowMore
+  examples: |
+    - I want to know more
+    - Can you tell me more about this?
+    - I want to know more about this
+    - Do you know more about this?
+    - Any more info?
+    - Can you tell me more?
+    - I want to know more about this
