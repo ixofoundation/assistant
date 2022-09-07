@@ -57,3 +57,8 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_agentApplication_form_submit
+
+- rule: Flow for transactionResult
+  steps:
+  - intent: transactionResult
+  - action: action_transactionResult

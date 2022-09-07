@@ -2,6 +2,7 @@
 # pylint: disable=unused-argument,invalid-name
 
 import base64
+from datetime import datetime
 import json
 import logging
 import os
@@ -170,6 +171,17 @@ class ActionMsgSendFormGlobalSlot(Action):
     ) -> List[Dict[Text, Any]]:
         """Set global slot for the form"""
         
+        # Get dayTime like morning, afternoon, evening from current time at GMT+2
+        
+        now = datetime.now()
+        
+        if now.hour < 12:
+            dayTime = "morning"
+        elif now.hour < 17:
+            dayTime = "afternoon"
+        else:
+            dayTime = "evening"
+        
         logger.info("Setting global slot for the form")
         
         slots_mapper = {
@@ -194,6 +206,7 @@ class ActionMsgSendFormGlobalSlot(Action):
         }
         
         new_slots = {}
+        new_slots["daytime"] = dayTime
         
         if tracker.active_loop_name == "msgSend_form":
             
@@ -550,4 +563,22 @@ class ValidateAgentApplicationForm(FormValidationAction):
         dispatcher.utter_message(response="utter_invalid_longAnswer")
         return {"longAnswer": None}
     
+
+class ActionTransactionResult(Action):
     
+    def name(self) -> Text:
+        return "action_transactionResult"
+    
+    def run(self, dispatcher, tracker, domain):
+        
+        logger.info(f"Running ActionTransactionResult")
+        
+        transaction_hash = tracker.get_slot("transactionHash")
+        
+        if transaction_hash:
+            
+            dispatcher.utter_message(response="utter_transactionResult", transactionResult="Success")
+        else:
+            dispatcher.utter_message(response="utter_noTransactionResult")
+            
+        return []
