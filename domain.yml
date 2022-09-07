@@ -454,7 +454,7 @@ responses:
   - text: Please sign to submit your application to join this {entityType}
     custom:
       response:
-        trigger: cellnode_msg
+        trigger: proto_msg
         type: project/CreateAgent
         did: '{userDid}'
       data:
