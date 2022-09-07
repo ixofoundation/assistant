@@ -55,6 +55,8 @@ ACCEPTABLE_AGENT = {
     "None": "none",
 }
 
+DEFAULT_CHAIN = "testnet"
+
 ACCEPTABLE_DENOM_VALUES = ACCEPTABLE_DENOM.values()
 ACCEPTABLE_AGENT_ROLES = ACCEPTABLE_AGENT.values()
 
@@ -261,7 +263,12 @@ class ActionMsgSendFormSubmit(Action):
             
             denom = tracker.get_slot("denom")
             toAddress = tracker.get_slot("toAddress")
-            url = "https://testnet-faucet.ixo.earth/credit"
+            
+            domain_chain = tracker.get_slot("chain")
+            if domain_chain is None:
+                domain_chain = "testnet"
+                
+            url = f"https://{domain_chain}-faucet.ixo.earth/credit"
             
             
             payload = json.dumps({
@@ -395,7 +402,10 @@ class ValidateMsgSendForm(FormValidationAction):
 
         logger.info(f"Validating ToAddress slot_value: {slot_value}")
         
-        domain_chain = "testnet"
+        domain_chain = tracker.get_slot("chain")
+        if domain_chain is None:
+            domain_chain = DEFAULT_CHAIN
+            
         endpoint = "cosmos/auth/v1beta1/accounts"
         chain_url = f"https://{domain_chain}.ixo.world/{endpoint}/{slot_value}"
 
