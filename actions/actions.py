@@ -575,10 +575,43 @@ class ActionTransactionResult(Action):
         
         transaction_hash = tracker.get_slot("transactionHash")
         
-        if transaction_hash:
+        chain = tracker.get_slot("chain")
+        if chain is None:
+            chain = DEFAULT_CHAIN
+        
+        transaction_status = None
+        message = None
             
-            dispatcher.utter_message(response="utter_transactionResult", transactionResult="Success")
+        transaction_result_url = f"https://{chain}.ixo.earth/rest/txs/{transaction_hash}"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.get(transaction_result_url, headers=headers)
+        result = response.json()
+        
+        if response.ok:
+
+            try:
+                message = result['tx']['value']['msg'][0]['value']['data']['status']
+                if message == "CREATED":
+                    transaction_status = "success"
+                else:
+                    transaction_status = "failed"
+            
+            except Exception as e:
+                message = str(e)
+                transaction_status = "failed"
+                    
         else:
-            dispatcher.utter_message(response="utter_noTransactionResult")
+            message = result['error']
+            transaction_status = "failed"     
+
+        dispatcher.utter_message(response="utter_transaction_result", transactionStatus=transaction_status)
+        
+        if transaction_status == "success":
+            dispatcher.utter_message(response="utter_transaction_success", blockExplorerUrl = transaction_result_url)
+        else:
+            dispatcher.utter_message(response="utter_transaction_failed", errorDescription = message)
             
-        return []
+        return [SlotSet("transactionMsg", message), SlotSet("transactionStatus", transaction_status)]

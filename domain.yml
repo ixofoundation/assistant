@@ -85,6 +85,7 @@ entities:
 - denom
 - email
 - entityType
+- exit
 - faq
 - fromAddress
 - hubApy
@@ -106,6 +107,7 @@ entities:
 - tokenBalance
 - transactionHash
 - transactionType
+- troubleshoot
 - uiPlaceholder
 - uiWidget
 - url
@@ -152,6 +154,11 @@ slots:
     type: any
 
   amount:
+    mappings:
+      - type: custom
+    type: any
+
+  blockExplorerUrl:
     mappings:
       - type: custom
     type: any
@@ -305,6 +312,16 @@ slots:
     mappings:
       - entity: transactionHash
         type: from_entity
+    type: any
+
+  transactionMsg:
+    mappings:
+      - type: custom
+    type: any
+
+  transactionStatus:
+    mappings:
+      - type: custom
     type: any
 
   transactionType:
@@ -597,9 +614,6 @@ responses:
   utter_invalid_toAddress:
     - text: That address seems to be Invalid. Could you try again...
 
-  utter_noTransactionResult:
-    - text: Sorry, I could not find any transaction results for that transaction ID.
-
   utter_openFeedback:
     - text: Here's your lovely feedback - {openFeedback}
 
@@ -678,11 +692,30 @@ responses:
   utter_survey_end:
     - text: Thank you for the feedback!
 
-  utter_transactionResult:
-    - text: "Transaction Result: {transactionResult}"
+  utter_transaction_failed:
+    - text: The reason for this is that your transaction {errorDescription}. What would you like to do now?
+      buttons:
+        - payload: '/msg{transactionType}'
+          title: Try Again
+        - payload: /troubleshoot
+          title: Troubleshoot
+        - payload: /exit
+          title: Exit
 
-  utter_transactionResultError:
-    - text: "Transaction Result: {transactionResultError}"
+  utter_transaction_result:
+    - text: Your {transactionType} transaction was {transactionStatus}.
+
+  utter_transaction_success:
+    - text: View on the Block Explorer
+      custom:
+        data:
+          url: {blockExplorerUrl}
+          type: button
+          label: View
+        response:
+          did: '{userDid}'
+          trigger: redirect
+          type: internal
 
   utter_valid_agentName:
     - text: Got it.
