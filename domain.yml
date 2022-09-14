@@ -709,7 +709,7 @@ responses:
     - text: View on the Block Explorer
       custom:
         data:
-          url: {blockExplorerUrl}
+          url: '{blockExplorerUrl}'
           type: button
           label: View
         response:

@@ -589,7 +589,7 @@ class ActionTransactionResult(Action):
         
         response = requests.get(transaction_result_url, headers=headers)
         result = response.json()
-        
+        logger.info(f"Transaction Result: {result}")
         if response.ok:
 
             try:
@@ -600,6 +600,7 @@ class ActionTransactionResult(Action):
                     transaction_status = "failed"
             
             except Exception as e:
+                logger.exception(msg=e, exc_info=True)
                 message = str(e)
                 transaction_status = "failed"
                     
