@@ -43,6 +43,8 @@ jobs:
         python -m pip install --upgrade "pip<20"
         pip install protobuf==3.19.4
         pip install rasa[full]==3.1.2
+        pip install -r requirements.txt
+
     - name: Train model
       run: |
         rasa train
