@@ -17,6 +17,11 @@ rules:
   - intent: greet
   - action: action_greet_wallet
 
+- rule: respond to account
+  steps:
+  - intent: account
+  - action: action_greet_wallet
+
 - rule: respond to goodbye
   steps:
   - intent: goodbye
