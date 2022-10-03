@@ -59,7 +59,7 @@ def sync_airtable_to_yaml():
     
     intent = "Buy"
     records = airtable.iterate(
-        "faq-response",
+        "FAQ-Responses",
         # filter_by_formula=f"AND({{intent}}='{intent}')",
         fields=[
             "Intent", "Response", "Long Answer", "Knowledge Resource Link", "Link Title", "Training Examples", "Approved"

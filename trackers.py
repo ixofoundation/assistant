@@ -72,7 +72,7 @@ class AirtableTracker(TrackerStore, SerializedTrackerAsText):
         """Updates and saves the current conversation state."""
         self.stream_events(tracker)
         
-        state = tracker.current_state(EventVerbosity.APPLIED)
+        state = tracker.current_state(EventVerbosity.ALL)
         
         self.add_to_store(tracker.sender_id, state)
         
@@ -92,6 +92,8 @@ class AirtableTracker(TrackerStore, SerializedTrackerAsText):
         confidence = None
         found = True
         
+        logger.info(f"Latest Message: {latest_message}")
+
         if latest_message:
             
             for event in events[::-1]:
@@ -108,12 +110,14 @@ class AirtableTracker(TrackerStore, SerializedTrackerAsText):
             
             key = f"{sender_id}-{timestamp}"
             found = True
-            
+            logger.info(f"Message: {message} Intent: {intent} Key: {key}")
             if message and intent and key:
                 
                 formula = match({"intent": intent, "message": message, "key": key})
                 logger.info(f"Formula: {formula}")
                 found = self.table.first(formula=formula)
-                
+                bool_found = bool(found)
+                logger.info(f"Found: {found}, Bool Found: {bool_found}")
                 if not found:
                     self.table.create({"intent": intent, "message": message, "confidence":confidence, "entities":str(entities), "key": key})
+                    logger.info(f"Created Message: {message} Intent: {intent} Key: {key}")

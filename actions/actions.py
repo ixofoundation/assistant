@@ -191,7 +191,7 @@ class ActionMsgSendFormGlobalSlot(Action):
                 "regex": f"({'|'.join(ACCEPTABLE_DENOM.keys())})",
             },
             "amount": {
-                "from_entity": ["amount-of-money", "amount", "number"],
+                # "from_entity": ["amount-of-money", "amount", "number"],
                 "custom": extract_amount,
             },
             "toAddress": {
@@ -213,6 +213,9 @@ class ActionMsgSendFormGlobalSlot(Action):
             latest_message = tracker.latest_message
             text = latest_message.get("text")
             entities = latest_message.get("entities")
+            
+            # Filter the entities that are overlapping with start and end index of the text
+            
             
             # Find relevant entities and map them to slots
             for slot_name, slot_mappings in slots_mapper.items():
@@ -616,3 +619,15 @@ class ActionTransactionResult(Action):
             dispatcher.utter_message(response="utter_transaction_failed", errorDescription = message)
             
         return [SlotSet("transactionMsg", message), SlotSet("transactionStatus", transaction_status)]
+
+class ActionClaimReward(Action):
+    
+    def name(self) -> Text:
+        return "action_claimReward"
+    
+    def run(self, dispatcher, tracker, domain):
+        
+        reward_entity = next(tracker.get_latest_entity_values("reward"), None)
+        denom = next(tracker.get_latest_entity_values("denom"), None)
+        
+        dispatcher.utter_message(response="utter_claim_reward", reward=reward_entity, denom=denom)

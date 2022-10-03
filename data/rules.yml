@@ -67,3 +67,13 @@ rules:
   steps:
   - intent: transactionResult
   - action: action_transactionResult
+
+- rule: Respond to claimReward
+  steps:
+  - intent: claimReward
+  - action: action_claimReward
+
+- rule: Respond to didYouKnow
+  steps:
+  - intent: didYouKnow
+  - action: utter_didYouKnow

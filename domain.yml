@@ -12,11 +12,14 @@ intents:
 - claim
 - claimDashboard
 - claimInstruction
+- claimReward
 - claimSummary
 - create
 - dayTime
 - deny
+- didYouKnow
 - editUsername
+- error
 - evaluate
 - explain
 - exportKey
@@ -71,6 +74,7 @@ intents:
 
 entities:
 - accountId
+- action
 - agentDid
 - agentName
 - agentRole
@@ -88,6 +92,7 @@ entities:
 - exit
 - faq
 - fromAddress
+- funFact
 - hubApy
 - marketRelayer
 - memo
@@ -99,6 +104,8 @@ entities:
 - phone-number
 - registered
 - reserveToken
+- reward
+- screenName
 - sharePercent
 - stakingAction
 - state
@@ -346,6 +353,7 @@ slots:
 
 actions:
 - action_agentApplication_form_submit
+- action_claimReward
 - action_faq
 - action_faq_followup
 - action_greet_wallet
@@ -505,6 +513,9 @@ responses:
     - text: I have no choice but to help you.
     - text: I try my best
 
+  utter_claim_reward:
+    - text: You have successfully claimed your reward of {reward} {denom} tokens!
+
   utter_confirm_agent_email:
     - text: Is the email address you would like to register {email}?
 
@@ -515,6 +526,12 @@ responses:
     - text: I don't think I understand. Can you try providing more detail?
     - text: um, what did you just say to me?
     - text: beep, boop, don't understand
+
+  utter_didYouKnow:
+    - text: Did you know that you can use the IXO Wallet to make payments to other users?
+    - text: Did you know that IXO is a blockchain-based platform for social impact projects?
+    - text: Here is a fun fact - IXO is a blockchain-based platform for social impact projects.
+    - text: IXO is not just a blockchain-based platform for social impact projects, it is also a social impact project itself!
 
   utter_error_staking_insufficient_balance:
     - buttons:
