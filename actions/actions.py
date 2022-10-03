@@ -423,7 +423,7 @@ class ValidateMsgSendForm(FormValidationAction):
             domain_chain = DEFAULT_CHAIN
             
         endpoint = "cosmos/auth/v1beta1/accounts"
-        chain_url = f"https://{domain_chain}.ixo.world/{endpoint}/{slot_value}"
+        chain_url = f"http://{domain_chain}.ixo.world/{endpoint}/{slot_value}"
 
         with requests.session() as sess:
             response = sess.get(chain_url)

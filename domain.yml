@@ -89,6 +89,7 @@ entities:
 - denom
 - email
 - entityType
+- errorDescription
 - exit
 - faq
 - fromAddress
