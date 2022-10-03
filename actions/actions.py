@@ -423,21 +423,28 @@ class ValidateMsgSendForm(FormValidationAction):
             domain_chain = DEFAULT_CHAIN
             
         endpoint = "cosmos/auth/v1beta1/accounts"
-        chain_url = f"http://{domain_chain}.ixo.world/{endpoint}/{slot_value}"
+        chain_url = f"https://{domain_chain}.ixo.earth/rest/{endpoint}/{slot_value}"
 
-        with requests.session() as sess:
-            response = sess.get(chain_url)
+        try:
+            with requests.session() as sess:
+                response = sess.get(chain_url)
 
-            if response.ok:
+                if response.ok:
 
-                result = response.json()
+                    result = response.json()
 
-                if "account" in result.keys():
-                    dispatcher.utter_message(response="utter_valid_toAddress")
-                    return {"toAddress": slot_value}
+                    if "account" in result.keys():
+                        dispatcher.utter_message(response="utter_valid_toAddress")
+                        return {"toAddress": slot_value}
 
-        dispatcher.utter_message(response="utter_invalid_toAddress")
-        return {"toAddress": None}
+            dispatcher.utter_message(response="utter_invalid_toAddress")
+            return {"toAddress": None}
+
+        except Exception as e:
+
+            logger.error(f"Error validating toAddress: {e}")
+            dispatcher.utter_message(text=f"We are unable to serve your request at this time due to {e} and validation of toAddress is being skipped")
+            return {"toAddress": slot_value}
 
     def validate_memo(
         self,
