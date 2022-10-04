@@ -1,77 +1,149 @@
 version: "3.1"
-
 intents:
-- account
-- accountTransactions
-- affirm
-- agentApplication
-- applyAsSA
-- autoRestake
-- backup
-- changePin
-- claim
-- claimDashboard
-- claimInstruction
-- claimReward
-- claimSummary
-- create
-- dayTime
-- deny
-- didYouKnow
-- editUsername
-- error
-- evaluate
-- explain
-- exportKey
-- faq
-- funFact
-- goodbye
-- greet
-- help
-- importDemoProject
-- inform
-- invite
-- joinProject
-- knowMore
-- makePayment
-- mobileBrowser
-- msgBuy
-- msgCreateAgent
-- msgDelegate
-- msgRedelegate
-- msgRegisterDid
-- msgSell
-- msgSend
-- msgSwap
-- msgSwapIxo
-- msgTransfer
-- msgUndelegate
-- msgUpdateAgentStatus
-- msgVote
-- msgWithdrawReward
-- msgWithdrawShare
-- myBonds
-- myClaims
-- myCoins
-- myCollections
-- myProjects
-- myStakes
-- nameAccount
-- newClaim
-- portfolios
-- purchaseIxo
-- removeAccount
-- requestPaymentIxo
-- scanQr
-- settings
-- stakeSummary
-- startQuest
-- submitClaim
-- transactionResult
-- user
-- verifyId
-
-
+- account:
+    use_entities: []
+- accountTransactions:
+    use_entities: []
+- affirm:
+    use_entities: []
+- agentApplication:
+    use_entities: []
+- applyAsSA:
+    use_entities: []
+- autoRestake:
+    use_entities: []
+- backup:
+    use_entities: []
+- changePin:
+    use_entities: []
+- claim:
+    use_entities: []
+- claimDashboard:
+    use_entities: []
+- claimInstruction:
+    use_entities: []
+- claimReward:
+    use_entities: []
+- claimSummary:
+    use_entities: []
+- create:
+    use_entities: []
+- dayTime:
+    use_entities: []
+- deny:
+    use_entities: []
+- didYouKnow:
+    use_entities: []
+- editUsername:
+    use_entities: []
+- error:
+    use_entities: []
+- evaluate:
+    use_entities: []
+- exit:
+    use_entities: []
+- explain:
+    use_entities: []
+- exportKey:
+    use_entities: []
+- faq:
+    use_entities: []
+- funFact:
+    use_entities: []
+- goodbye:
+    use_entities: []
+- greet:
+    use_entities: []
+- help:
+    use_entities: []
+- importDemoProject:
+    use_entities: []
+- inform:
+    use_entities: []
+- invite:
+    use_entities: []
+- joinProject:
+    use_entities: []
+- knowMore:
+    use_entities: []
+- makePayment:
+    use_entities: []
+- mobileBrowser:
+    use_entities: []
+- msgBuy:
+    use_entities: []
+- msgCreateAgent:
+    use_entities: []
+- msgDelegate:
+    use_entities: []
+- msgRedelegate:
+    use_entities: []
+- msgRegisterDid:
+    use_entities: []
+- msgSell:
+    use_entities: []
+- msgSend:
+    use_entities: []
+- msgSwap:
+    use_entities: []
+- msgSwapIxo:
+    use_entities: []
+- msgTransfer:
+    use_entities: []
+- msgUndelegate:
+    use_entities: []
+- msgUpdateAgentStatus:
+    use_entities: []
+- msgVote:
+    use_entities: []
+- msgWithdrawReward:
+    use_entities: []
+- msgWithdrawShare:
+    use_entities: []
+- myBonds:
+    use_entities: []
+- myClaims:
+    use_entities: []
+- myCoins:
+    use_entities: []
+- myCollections:
+    use_entities: []
+- myProjects:
+    use_entities: []
+- myStakes:
+    use_entities: []
+- nameAccount:
+    use_entities: []
+- newClaim:
+    use_entities: []
+- portfolios:
+    use_entities: []
+- purchaseIxo:
+    use_entities: []
+- removeAccount:
+    use_entities: []
+- requestPaymentIxo:
+    use_entities: []
+- restart:
+    use_entities: []
+- scanQr:
+    use_entities: []
+- settings:
+    use_entities: []
+- stakeSummary:
+    use_entities: []
+- startQuest:
+    use_entities: []
+- submitClaim:
+    use_entities: []
+- transactionResult:
+    use_entities: []
+- troubleshoot:
+    use_entities: []
+- user:
+    use_entities: []
+- verifyId:
+    use_entities: []
 entities:
 - accountId
 - action
@@ -101,8 +173,9 @@ entities:
 - name
 - number
 - openFeedback
-- phoneNumber
+- payload
 - phone-number
+- phoneNumber
 - registered
 - reserveToken
 - reward
@@ -122,236 +195,6 @@ entities:
 - userDid
 - userName
 - validatorName
-
-
-slots:
-
-  accountId:
-    mappings:
-      - entity: accountId
-        type: from_entity
-    type: any
-
-  agentDid:
-    mappings:
-      - entity: agentDid
-        type: from_entity
-    type: any
-
-  agentName:
-    mappings:
-      - entity: agentName
-        type: from_entity
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: agentName
-        type: from_text
-    type: any
-
-  agentRole:
-    mappings:
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: agentRole
-        entity: agentRole
-        type: from_entity
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: agentRole
-        type: from_text
-    type: any
-
-  amount:
-    mappings:
-      - type: custom
-    type: any
-
-  blockExplorerUrl:
-    mappings:
-      - type: custom
-    type: any
-
-  chain:
-    mappings:
-      - entity: chain
-        type: from_entity
-    type: any
-
-  chainId:
-    mappings:
-      - entity: chainId
-        type: from_entity
-    type: any
-
-  context:
-    mappings:
-      - entity: context
-        type: from_entity
-    type: any
-
-  daytime:
-    mappings:
-      - type: custom
-    type: any
-
-  denom:
-    mappings:
-      - type: custom
-    type: any
-
-  email:
-    mappings:
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: email
-        entity: email
-        type: from_entity
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: email
-        type: from_text
-    type: any
-
-  entityType:
-    initial_value: IXO Platform
-    mappings:
-      - entity: entityType
-        type: from_entity
-    type: any
-
-  fromAddress:
-    mappings:
-      - entity: fromAddress
-        type: from_entity
-    type: any
-
-  longAnswer:
-    mappings:
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: longAnswer
-        type: from_text
-    type: any
-
-  memo:
-    mappings:
-      - type: custom
-    type: any
-
-  memo_text:
-    mappings:
-      - type: custom
-    type: any
-
-  messageType:
-    initial_value: Send
-    mappings:
-      - entity: messageType
-        type: from_entity
-    type: any
-
-  msgSend_global_slot:
-    mappings:
-      - action: action_msgSend_form_global_slot
-        type: custom
-    type: any
-
-  openFeedback:
-    mappings:
-      - entity: openFeedback
-        type: from_entity
-    type: any
-
-  phoneNumber:
-    mappings:
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: phoneNumber
-        entity: phoneNumber
-        type: from_entity
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: phoneNumber
-        entity: phone-number
-        type: from_entity
-      - conditions:
-          - active_loop: agentApplication_form
-            requested_slot: phoneNumber
-        type: from_text
-    type: any
-
-  retrievalAnswer:
-    mappings:
-      - type: custom
-    type: any
-
-  retrievalIntent:
-    mappings:
-      - type: custom
-    type: any
-
-  retrievalKnowledgeResourceLink:
-    mappings:
-      - type: custom
-    type: any
-
-  retrievalLinkTitle:
-    mappings:
-      - type: custom
-    type: any
-
-  retrievalLongAnswer:
-    mappings:
-      - type: custom
-    type: any
-
-  state:
-    mappings:
-      - entity: state
-        type: from_entity
-    type: any
-
-  toAddress:
-    mappings:
-      - type: custom
-    type: any
-  
-  transactionHash:
-    mappings:
-      - entity: transactionHash
-        type: from_entity
-    type: any
-
-  transactionMsg:
-    mappings:
-      - type: custom
-    type: any
-
-  transactionStatus:
-    mappings:
-      - type: custom
-    type: any
-
-  transactionType:
-    initial_value: Send
-    mappings:
-      - entity: transactionType
-        type: from_entity
-    type: any
-
-  userDid:
-    mappings:
-      - entity: userDid
-        type: from_entity
-    type: any
-
-  userName:
-    mappings:
-      - entity: userName
-        type: from_entity
-    type: any
-
-
 actions:
 - action_agentApplication_form_submit
 - action_claimReward
@@ -363,368 +206,493 @@ actions:
 - action_transactionResult
 - validate_agentApplication_form
 - validate_msgSend_form
-
-
+slots:
+  accountId:
+    mappings:
+    - type: from_entity
+      entity: accountId
+    type: any
+  agentDid:
+    mappings:
+    - type: from_entity
+      entity: agentDid
+    type: any
+  agentName:
+    mappings:
+    - type: from_entity
+      entity: agentName
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentName
+    type: any
+  agentRole:
+    mappings:
+    - type: from_entity
+      entity: agentRole
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentRole
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: agentRole
+    type: any
+  amount:
+    mappings:
+    - type: custom
+    type: any
+  blockExplorerUrl:
+    mappings:
+    - type: custom
+    type: any
+  chain:
+    mappings:
+    - type: from_entity
+      entity: chain
+    type: any
+  chainId:
+    mappings:
+    - type: from_entity
+      entity: chainId
+    type: any
+  context:
+    mappings:
+    - type: from_entity
+      entity: context
+    type: any
+  daytime:
+    mappings:
+    - type: custom
+    type: any
+  denom:
+    mappings:
+    - type: custom
+    type: any
+  email:
+    mappings:
+    - type: from_entity
+      entity: email
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: email
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: email
+    type: any
+  entityType:
+    mappings:
+    - type: from_entity
+      entity: entityType
+    type: any
+  fromAddress:
+    mappings:
+    - type: from_entity
+      entity: fromAddress
+    type: any
+  longAnswer:
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: longAnswer
+    type: any
+  memo:
+    mappings:
+    - type: custom
+    type: any
+  memo_text:
+    mappings:
+    - type: custom
+    type: any
+  messageType:
+    mappings:
+    - type: from_entity
+      entity: messageType
+    type: any
+  msgSend_global_slot:
+    mappings:
+    - type: custom
+      action: action_msgSend_form_global_slot
+    type: any
+  openFeedback:
+    mappings:
+    - type: from_entity
+      entity: openFeedback
+    type: any
+  phoneNumber:
+    mappings:
+    - type: from_entity
+      entity: phoneNumber
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: phoneNumber
+    - type: from_entity
+      entity: phone-number
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: phoneNumber
+    - type: from_text
+      conditions:
+      - active_loop: agentApplication_form
+        requested_slot: phoneNumber
+    type: any
+  retrievalAnswer:
+    mappings:
+    - type: custom
+    type: any
+  retrievalIntent:
+    mappings:
+    - type: custom
+    type: any
+  retrievalKnowledgeResourceLink:
+    mappings:
+    - type: custom
+    type: any
+  retrievalLinkTitle:
+    mappings:
+    - type: custom
+    type: any
+  retrievalLongAnswer:
+    mappings:
+    - type: custom
+    type: any
+  state:
+    mappings:
+    - type: from_entity
+      entity: state
+    type: any
+  toAddress:
+    mappings:
+    - type: custom
+    type: any
+  transactionHash:
+    mappings:
+    - type: from_entity
+      entity: transactionHash
+    type: any
+  transactionMsg:
+    mappings:
+    - type: custom
+    type: any
+  transactionStatus:
+    mappings:
+    - type: custom
+    type: any
+  transactionType:
+    mappings:
+    - type: from_entity
+      entity: transactionType
+    type: any
+  userDid:
+    mappings:
+    - type: from_entity
+      entity: userDid
+    type: any
+  userName:
+    mappings:
+    - type: from_entity
+      entity: userName
+    type: any
 responses:
-
   utter_affirm_agent_application:
-    - custom:
-        data:
-          value:
-            - agentRole: '{agentRole}'
-            - name: '{agentName}'
-            - email: '{email}'
-            - phoneNumber: '{phoneNumber}'
-            - motivation: '{longAnswer}'
-        response:
-          did: '{userDid}'
-          trigger: proto_msg
-          type: project/CreateAgent
-      text: Please sign to submit your application to join this {entityType}
-
+  - text: Please sign to submit your application to join this {entityType}
+    custom:
+      data:
+        value:
+        - agentRole: '{agentRole}'
+        - name: '{agentName}'
+        - email: '{email}'
+        - phoneNumber: '{phoneNumber}'
+        - motivation: '{longAnswer}'
+      response:
+        did: '{userDid}'
+        trigger: proto_msg
+        type: project/CreateAgent
   utter_affirm_transaction:
-    - custom:
-        data:
-          from_address: '{fromAddress}'
-          to_address: '{toAddress}'
-          value:
-            - amount: '{amount}'
-              denom: '{denom}'
-        response:
-          did: '{userDid}'
-          trigger: proto_msg
-          type: cosmos-sdk/MsgSend
-      text: Initiating new transaction of type {transactionType} for an amount of {amount} {denom} tokens to account {toAddress}
-
-  utter_ask_agentName:
-    - text: What is the Agent Name you want to register?
-
-  utter_ask_agentRole:
-    - buttons:
-        - payload: SA
-          title: Implementer
-        - payload: IA
-          title: Investor
-        - payload: EA
-          title: Evaluator
-        - payload: none
-          title: None!
-      text: In what role would you like to contribute to this {entityType}?
-
+  - text: Initiating new transaction of type {transactionType} for an amount of {amount} {denom} tokens to account {toAddress}
+    custom:
+      data:
+        from_address: '{fromAddress}'
+        to_address: '{toAddress}'
+        value:
+        - amount: '{amount}'
+          denom: '{denom}'
+      response:
+        did: '{userDid}'
+        trigger: proto_msg
+        type: cosmos-sdk/MsgSend
   utter_ask_agent_motivation:
-    - text: In one sentence, what is your motivation for applying?
-
+  - text: In one sentence, what is your motivation for applying?
+  utter_ask_agentName:
+  - text: What is the Agent Name you want to register?
+  utter_ask_agentRole:
+  - text: In what role would you like to contribute to this {entityType}?
+    buttons:
+    - payload: SA
+      title: Implementer
+    - payload: IA
+      title: Investor
+    - payload: EA
+      title: Evaluator
+    - payload: none
+      title: None!
   utter_ask_amount:
-    - text: What is the amount you would like to {transactionType}?
-
+  - text: What is the amount you would like to {transactionType}?
   utter_ask_confirm_agent_email:
-    - text: Is the email address you would like to register {email}?
-
+  - text: Is the email address you would like to register {email}?
   utter_ask_confirm_agent_phone:
-    - text: Is the phone number you would like to register {phoneNumber}?
-
+  - text: Is the phone number you would like to register {phoneNumber}?
   utter_ask_denom:
-    - buttons:
-        - payload: uixo
-          title: IXO
-        - payload: atom
-          title: ATOM
-        - payload: xusd
-          title: XUSD
-        - payload: regen
-          title: REGEN
-        - payload: bct
-          title: BCT
-        - payload: usdc
-          title: USDC
-      text: Which token would you like to {transactionType}?
-
+  - text: Which token would you like to {transactionType}?
+    buttons:
+    - payload: uixo
+      title: IXO
+    - payload: atom
+      title: ATOM
+    - payload: xusd
+      title: XUSD
+    - payload: regen
+      title: REGEN
+    - payload: bct
+      title: BCT
+    - payload: usdc
+      title: USDC
   utter_ask_email:
-    - text: What email address would you like to register?
-
+  - text: What email address would you like to register?
   utter_ask_longAnswer:
-    - text: In one sentence, what is your motivation for applying?
-
+  - text: In one sentence, what is your motivation for applying?
   utter_ask_memo:
-    - text: What is the memo for this transaction?
-
+  - text: What is the memo for this transaction?
   utter_ask_memo_text:
-    - text: What is the memo?
-
+  - text: What is the memo?
   utter_ask_phoneNumber:
-    - text: What is the phone number you would like to register?
-
+  - text: What is the phone number you would like to register?
   utter_ask_survey_form_openFeedback:
-    - text: Is there any other feedback you can provide?
-
+  - text: Is there any other feedback you can provide?
   utter_ask_survey_form_rating:
-    - buttons:
-        - payload: '1'
-          title: '1'
-        - payload: '2'
-          title: '2'
-        - payload: '3'
-          title: '3'
-        - payload: '4'
-          title: '4'
-        - payload: '5'
-          title: '5'
-      text: On a scale of 1-5, how would you rate your conversation today?
-
+  - text: On a scale of 1-5, how would you rate your conversation today?
+    buttons:
+    - payload: '1'
+      title: '1'
+    - payload: '2'
+      title: '2'
+    - payload: '3'
+      title: '3'
+    - payload: '4'
+      title: '4'
+    - payload: '5'
+      title: '5'
   utter_ask_toAddress:
-    - text: What is the account address to which you would like to {transactionType} {denom} tokens?
-
+  - text: What is the account address to which you would like to {transactionType} {denom} tokens?
   utter_assist:
-    - buttons:
-        - payload: verifyId
-          title: Verify my ID
-        - payload: submitClaim
-          title: Submit a Claim
-        - payload: makePayment
-          title: Make a Payment
-        - payload: joinProject
-          title: Join a Project
-      text: How may I assist you? Type your request, or choose an Action
-
-  utter_chitchat/bot_challenge:
-    - text: I'm a bot, and I have a lot to learn! IXOIXOIXO
-
-  utter_chitchat/capabilities:
-    - text: I can help you make a transaction.
-
-  utter_chitchat/confirm_presence:
-    - text: yep I'm here.
-    - text: I'm still listening.
-
-  utter_chitchat/goodbye:
-    - text: bye bye
-    - text: c u l8er allig8er
-    - text: I X O
-
-  utter_chitchat/mood_great:
-    - text: Superb!
-    - text: right on
-
-  utter_chitchat/mood_unhappy:
-    - text: sorry to hear that :(
-    - text: ok can you be nice to me
-
-  utter_chitchat/thanks:
-    - text: No problem!
-    - text: I have no choice but to help you.
-    - text: I try my best
-
+  - text: How may I assist you? Type your request, or choose an Action
+    buttons:
+    - payload: verifyId
+      title: Verify my ID
+    - payload: submitClaim
+      title: Submit a Claim
+    - payload: makePayment
+      title: Make a Payment
+    - payload: joinProject
+      title: Join a Project
   utter_claim_reward:
-    - text: You have successfully claimed your reward of {reward} {denom} tokens!
-
+  - text: You have successfully claimed your reward of {reward} {denom} tokens!
   utter_confirm_agent_email:
-    - text: Is the email address you would like to register {email}?
-
+  - text: Is the email address you would like to register {email}?
   utter_confirm_agent_phone:
-    - text: Is the phone number you would like to register {phoneNumber}?
-
+  - text: Is the phone number you would like to register {phoneNumber}?
   utter_default:
-    - text: I don't think I understand. Can you try providing more detail?
-    - text: um, what did you just say to me?
-    - text: beep, boop, don't understand
-
+  - text: I don't think I understand. Can you try providing more detail?
+  - text: um, what did you just say to me?
+  - text: beep, boop, don't understand
   utter_didYouKnow:
-    - text: Did you know that you can use the IXO Wallet to make payments to other users?
-    - text: Did you know that IXO is a blockchain-based platform for social impact projects?
-    - text: Here is a fun fact - IXO is a blockchain-based platform for social impact projects.
-    - text: IXO is not just a blockchain-based platform for social impact projects, it is also a social impact project itself!
-
+  - text: Did you know that you can use the IXO Wallet to make payments to other users?
+  - text: Did you know that IXO is a blockchain-based platform for social impact projects?
+  - text: Here is a fun fact - IXO is a blockchain-based platform for social impact projects.
+  - text: IXO is not just a blockchain-based platform for social impact projects, it is also a social impact project itself!
   utter_error_staking_insufficient_balance:
-    - buttons:
-        - payload: purchaseIxo
-          title: Purchase
-        - payload: requestPaymentIxo
-          title: Receive
-        - payload: msgSwapIxo
-          title: Swap
-        - payload: deny
-          title: No thanks!
-      text: You don't have any available balance of IXO tokens to stake. Would you like to add IXO to your account?
-
+  - text: You don't have any available balance of IXO tokens to stake. Would you like to add IXO to your account?
+    buttons:
+    - payload: purchaseIxo
+      title: Purchase
+    - payload: requestPaymentIxo
+      title: Receive
+    - payload: msgSwapIxo
+      title: Swap
+    - payload: deny
+      title: No thanks!
   utter_explain_staking:
-    - text: Stake IXO tokens to help secure and govern the Internet of Impact Hub network
-
+  - text: Stake IXO tokens to help secure and govern the Internet of Impact Hub network
   utter_explain_staking_automatic:
-    - buttons:
-        - payload: requestPaymentIxo
-          title: Auto Restake
-        - payload: faq/automatedStaking
-          title: Explain
-        - payload: deny
-          title: No thanks!
-      text: Your staking rewards can be automatically re-staked to earn compounding yields. Would you like to set up this free service?
-
+  - text: Your staking rewards can be automatically re-staked to earn compounding yields. Would you like to set up this free service?
+    buttons:
+    - payload: requestPaymentIxo
+      title: Auto Restake
+    - payload: faq/automatedStaking
+      title: Explain
+    - payload: deny
+      title: No thanks!
   utter_explain_staking_rewards:
-    - text: You will receive IXO Staking Rewards of approximately {hubAPY} percent per annum
-
+  - text: You will receive IXO Staking Rewards of approximately {hubAPY} percent per annum
   utter_faucet_fail:
-    - text: Sorry, the faucet is currently out of {denom} tokens.
-
+  - text: Sorry, the faucet is currently out of {denom} tokens.
   utter_faucet_success:
-    - text: You have successfully received {denom} tokens from the faucet.
-
+  - text: You have successfully received {denom} tokens from the faucet.
   utter_first_time_mobile:
-    - buttons:
-        - payload: startQuest
-          title: Start
-        - payload: deny
-          title: No Thanks
-        - payload: explain
-          title: Explain
-      text: To get started, would you like to try a small Impact Quest? This is a fun way to explore some of the features of this app. Your quest is to get one other person to install the Impact Wallet. Earn 50 IXO for successfully completing this quest!
-
+  - text: To get started, would you like to try a small Impact Quest? This is a fun way to explore some of the features of this app. Your quest is to get one other person to install the Impact Wallet. Earn 50 IXO for successfully completing this quest!
+    buttons:
+    - payload: startQuest
+      title: Start
+    - payload: deny
+      title: No Thanks
+    - payload: explain
+      title: Explain
   utter_form_interrupted:
-    - text: Form was already active in conversation. Closing it now due to interruption. Please start again.
-
+  - text: Form was already active in conversation. Closing it now due to interruption. Please start again.
   utter_goodbye:
-    - text: bye bye
-    - text: c u l8er allig8er
-    - text: I X O
-
+  - text: bye bye
+  - text: c u l8er allig8er
+  - text: I X O
   utter_greet:
-    - text: Good {daytime} {userName}
-
+  - text: Good {daytime} {userName}
   utter_greet_wallet:
-    - buttons:
-        - payload: /msgSend
-          title: Send
-        - payload: /msgSend{{"transactionType":"faucet"}}
-          title: Faucet Transfer
-        - payload: /msgTransfer
-          title: Transfer
-        - payload: /msgDelegate
-          title: Delegate
-        - payload: /showAccount
-          title: Receive
-        - payload: /agentApplication
-          title: Agent Application
-      text: Good {daytime}. Choose a transaction.
-
+  - text: Good {daytime}. Choose a transaction.
+    buttons:
+    - payload: /msgSend
+      title: Send
+    - payload: /msgSend{{"transactionType":"faucet"}}
+      title: Faucet Transfer
+    - payload: /msgTransfer
+      title: Transfer
+    - payload: /msgDelegate
+      title: Delegate
+    - payload: /showAccount
+      title: Receive
+    - payload: /agentApplication
+      title: Agent Application
+  - text: 'Good {daytime} {userName}. Here is something that I can help you with:'
+    buttons:
+    - payload: /msgSend
+      title: Send
+    - payload: /msgSend{{"transactionType":"faucet"}}
+      title: Faucet Transfer
+    - payload: /msgTransfer
+      title: Transfer
+    - payload: /msgDelegate
+      title: Delegate
+    - payload: /showAccount
+      title: Receive
+    - payload: /agentApplication
+      title: Agent Application
+  utter_how_are_you_feeling:
+  - text: How are you feeling today?
+    buttons:
+    - payload: good
+      title: Good
+    - payload: bad
+      title: Bad
+    - payload: terrible
+      title: Terrible
   utter_initiate_faucet:
-    - text: Initiating new transaction of type {transactionType} for {denom} tokens to account {toAddress}
-
+  - text: Initiating new transaction of type {transactionType} for {denom} tokens to account {toAddress}
   utter_invalid_agentName:
-    - text: That Agent Name seems to be Invalid. Could you try again...
-
+  - text: That Agent Name seems to be Invalid. Could you try again...
   utter_invalid_agentRole:
-    - text: That Agent Role seems to be Invalid. Could you try again...
-
+  - text: That Agent Role seems to be Invalid. Could you try again...
   utter_invalid_amount:
-    - text: That input does not seem right. Please try again
-
+  - text: That input does not seem right. Please try again
   utter_invalid_denom:
-    - text: That denom {denom} value seems to be Invalid. Could you try again..
-
+  - text: That denom {denom} value seems to be Invalid. Could you try again..
   utter_invalid_email:
-    - text: That email address seems to be Invalid. Could you try again...
-
+  - text: That email address seems to be Invalid. Could you try again...
   utter_invalid_longAnswer:
-    - text: That answer seems to be Invalid. Could you try again...
-
+  - text: That answer seems to be Invalid. Could you try again...
   utter_invalid_phoneNumber:
-    - text: That phone number seems to be Invalid. Could you try again...
-
+  - text: That phone number seems to be Invalid. Could you try again...
   utter_invalid_toAddress:
-    - text: That address seems to be Invalid. Could you try again...
-
+  - text: That address seems to be Invalid. Could you try again...
   utter_openFeedback:
-    - text: Here's your lovely feedback - {openFeedback}
-
-  utter_quest_recruitment_claim 1:
-    - buttons:
-        - payload: scanQr
-          title: Scan QR
-      text: Ask your new recruit to open the account settings page in their app and show you their QR Code
-
+  - text: Here's your lovely feedback - {openFeedback}
+  utter_quest_recruitment_claim_1:
+  - text: Ask your new recruit to open the account settings page in their app and show you their QR Code
+    buttons:
+    - payload: scanQr
+      title: Scan QR
   utter_quest_recruitmentclaim_2:
-    - text: How would you like your new recruit to make an Impact?
-
+  - text: How would you like your new recruit to make an Impact?
   utter_quest_step1:
-    - buttons:
-        - payload: importDemoProject
-          title: Import
-        - payload: deny
-          title: Later
-        - payload: explain
-          title: Explain
-      text: Your first step is to import the Recruitment demonstration project
-
+  - text: Your first step is to import the Recruitment demonstration project
+    buttons:
+    - payload: importDemoProject
+      title: Import
+    - payload: deny
+      title: Later
+    - payload: explain
+      title: Explain
   utter_quest_step2:
-    - buttons:
-        - payload: applyAsSA
-          title: Join
-        - payload: deny
-          title: Later
-        - payload: explain
-          title: Explain
-      text: Now apply to join the Recruitment demo project. You will not be asked to submit any personal details
-
+  - text: Now apply to join the Recruitment demo project. You will not be asked to submit any personal details
+    buttons:
+    - payload: applyAsSA
+      title: Join
+    - payload: deny
+      title: Later
+    - payload: explain
+      title: Explain
   utter_quest_step3:
-    - buttons:
-        - payload: invite
-          title: Invite
-        - payload: deny
-          title: Later
-        - payload: explain
-          title: Explain
-      text: To complete the Quest, recruit someone to download the Impact Wallet and create a new account
-
+  - text: To complete the Quest, recruit someone to download the Impact Wallet and create a new account
+    buttons:
+    - payload: invite
+      title: Invite
+    - payload: deny
+      title: Later
+    - payload: explain
+      title: Explain
   utter_quest_step4:
-    - buttons:
-        - payload: newClaim
-          title: Submit Claim
-        - payload: deny
-          title: Later
-        - payload: explain
-          title: Explain
-      text: Now make your Recruitment Claim
-
+  - text: Now make your Recruitment Claim
+    buttons:
+    - payload: newClaim
+      title: Submit Claim
+    - payload: deny
+      title: Later
+    - payload: explain
+      title: Explain
   utter_quest_success_step1:
-    - text: Success! You have imported the demo Project. You can view this project by selecting My Projects in the menu
-
+  - text: Success! You have imported the demo Project. You can view this project by selecting My Projects in the menu
   utter_quest_success_step2:
-    - text: Congratulations! Your application to join the Recruitment demo project has been automatically accepted.
-
+  - text: Congratulations! Your application to join the Recruitment demo project has been automatically accepted.
   utter_select_staking_options:
-    - buttons:
-        - payload: msgDelegate
-          title: Delegate
-        - payload: msgUndelegate
-          title: Undelegate
-        - payload: msgRedelegate
-          title: Redelegate
-        - payload: autoRestake
-          title: Automate
-        - payload: deny
-          title: None
-      text: Choose from your staking options
-
+  - text: Choose from your staking options
+    buttons:
+    - payload: msgDelegate
+      title: Delegate
+    - payload: msgUndelegate
+      title: Undelegate
+    - payload: msgRedelegate
+      title: Redelegate
+    - payload: autoRestake
+      title: Automate
+    - payload: deny
+      title: None
   utter_start_over:
-    - text: Ok, let's start over.
-
+  - text: Ok, let's start over.
   utter_survey_end:
-    - text: Thank you for the feedback!
-
+  - text: Thank you for the feedback!
   utter_transaction_failed:
-    - text: The reason for this is that your transaction {errorDescription}. What would you like to do now?
-      buttons:
-        - payload: '/msg{transactionType}'
-          title: Try Again
-        - payload: /troubleshoot
-          title: Troubleshoot
-        - payload: /exit
-          title: Exit
-
+  - text: The reason for this is that your transaction {errorDescription}. What would you like to do now?
+    buttons:
+    - payload: /msg{transactionType}
+      title: Try Again
+    - payload: /troubleshoot
+      title: Troubleshoot
+    - payload: /exit
+      title: Exit
   utter_transaction_result:
-    - text: Your {transactionType} transaction was {transactionStatus}.
-
+  - text: Your {transactionType} transaction was {transactionStatus}.
   utter_transaction_success:
-    - text: View on the Block Explorer
+  - text: View on the Block Explorer
+    custom:
       custom:
         data:
           url: '{blockExplorerUrl}'
@@ -734,57 +702,44 @@ responses:
           did: '{userDid}'
           trigger: redirect
           type: internal
-
   utter_valid_agentName:
-    - text: Got it.
-
+  - text: Got it.
   utter_valid_agentRole:
-    - text: Got it.
-
+  - text: Got it.
   utter_valid_amount:
-    - text: Got that, you would like to {transactionType} an amount of {amount}
-
+  - text: Got that, you would like to {transactionType} an amount of {amount}
   utter_valid_denom:
-    - text: Got that you want to {transactionType} {denom}.
-
+  - text: Got that you want to {transactionType} {denom}.
   utter_valid_email:
-    - text: Got it.
-
+  - text: Got it.
   utter_valid_longAnswer:
-    - text: Got it.
-
+  - text: Got it.
   utter_valid_memo_text:
-    - text: Added memo {memo} to this transaction...
-
+  - text: Added memo {memo} to this transaction...
   utter_valid_phoneNumber:
-    - text: Got it.
-
+  - text: Got it.
   utter_valid_toAddress:
-    - text: Got it that you would like to {transactionType} tokens to {toAddress}
-
-
+  - text: Got it that you would like to {transactionType} tokens to {toAddress}
+  utter_welcome:
+  - text: Hi {userName}, welcome to you Impact Wallet
 forms:
-
-  msgSend_form:
-    ignored_intents:
-    - greet
-    required_slots:
-      - denom
-      - amount
-      - toAddress
-      - memo
-
   agentApplication_form:
+    required_slots:
+    - agentRole
+    - agentName
+    - email
+    - phoneNumber
+    - longAnswer
     ignored_intents:
     - greet
+  msgSend_form:
     required_slots:
-     - agentRole
-     - agentName
-     - email
-     - phoneNumber
-     - longAnswer
-
-
+    - denom
+    - amount
+    - toAddress
+    - memo
+    ignored_intents:
+    - greet
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

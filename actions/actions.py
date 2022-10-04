@@ -424,6 +424,8 @@ class ValidateMsgSendForm(FormValidationAction):
             
         endpoint = "cosmos/auth/v1beta1/accounts"
         chain_url = f"https://{domain_chain}.ixo.earth/rest/{endpoint}/{slot_value}"
+        dispatcher.utter_message(response="utter_valid_toAddress")
+        return {"toAddress": slot_value}
 
         try:
             with requests.session() as sess:

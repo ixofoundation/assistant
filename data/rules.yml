@@ -1,32 +1,43 @@
-version: "3.1"
-
 rules:
-
-- rule: respond to faq
+- rule: Flow for transactionResult
   steps:
-  - intent: faq
-  - action: action_faq
-
-- rule: respond to faq followup
-  steps:
-  - intent: knowMore
-  - action: action_faq_followup
-
-- rule: respond to greet
-  steps:
-  - intent: greet
-  - action: action_greet_wallet
-
-- rule: respond to account
+  - intent: transactionResult
+  - action: action_transactionResult
+- rule: Respond to Account
   steps:
   - intent: account
   - action: action_greet_wallet
-
-- rule: respond to goodbye
+- rule: Respond to claimReward
+  steps:
+  - intent: claimReward
+  - action: action_claimReward
+- rule: Respond to didYouKnow
+  steps:
+  - intent: didYouKnow
+  - action: utter_didYouKnow
+- rule: Respond to Greet
+  steps:
+  - intent: greet
+  - action: action_greet_wallet
+- rule: Rule for FAQ
+  steps:
+  - intent: faq
+  - action: action_faq
+- rule: Rule for FAQ followup
+  steps:
+  - intent: knowMore
+  - action: action_faq_followup
+- rule: Rule for Good Bye
   steps:
   - intent: goodbye
   - action: utter_goodbye
-
+- rule: Activate agentApplication_form
+  steps:
+  - intent: agentApplication
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: agentApplication_form
+  - active_loop: agentApplication_form
 - rule: Activate msgSend form to collect information needed to do a Send Transaction
   steps:
   - intent: msgSend
@@ -34,46 +45,22 @@ rules:
   - active_loop: null
   - action: msgSend_form
   - active_loop: msgSend_form
-
-- rule: Submit msgSend_form
-  condition:
-  - active_loop: msgSend_form
-  steps:
-  - action: msgSend_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: action_msgSend_form_submit
-
-- rule: Activate agentApplication_form to collect information needed to do a Agent Application
-  steps:
-  - intent: agentApplication
-  - action: action_deactivate_loop
-  - active_loop: null
-  - action: agentApplication_form
+- condition:
   - active_loop: agentApplication_form
-
-- rule: Submit agentApplication_form
-  condition:
-  - active_loop: agentApplication_form
+  rule: Submit agentApplication_form
   steps:
   - action: agentApplication_form
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
   - action: action_agentApplication_form_submit
-
-- rule: Flow for transactionResult
+- condition:
+  - active_loop: msgSend_form
+  rule: Submit Message Send Form
   steps:
-  - intent: transactionResult
-  - action: action_transactionResult
-
-- rule: Respond to claimReward
-  steps:
-  - intent: claimReward
-  - action: action_claimReward
-
-- rule: Respond to didYouKnow
-  steps:
-  - intent: didYouKnow
-  - action: utter_didYouKnow
+  - action: msgSend_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_msgSend_form_submit
+version: '3.1'

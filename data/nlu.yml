@@ -1,83 +1,76 @@
-version: "3.1"
-
+version: '3.1'
 nlu:
+- intent: affirm
+  examples: |-
+    - y
+    - indeed
+    - yes
+    - that sounds good
+    - correct
+    - of course
+- intent: deny
+  examples: |-
+    - no
+    - never
+    - no way
+    - I don't think so
+    - n
+    - don't like that
+    - not really
+- intent: goodbye
+  examples: |-
+    - good night
+    - see you around
+    - bye
+    - have a nice day
+    - cu
+    - see you later
+    - goodbye
+    - cee you later
+    - good by
+    - bye bye
 - intent: greet
-  examples: |
-    - hey
+  examples: |-
     - hello
-    - hi
-    - hello there
+    - goodmorning
+    - goodevening
+    - hey there
     - good morning
     - good evening
     - moin
-    - hey there
-    - let's go
+    - hello there
+    - hi
     - hey dude
-    - goodmorning
-    - goodevening
+    - let's go
+    - hey
     - good afternoon
-
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
-
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
-
-- intent: msgSend
-  examples: |
-    - Send 100 IXO
-    - send tokens
-    - send transaction
-    - Send 100 tokens
-    - I would like to send
-    - Pay someone
-    - msgSend 100 IXO
-    - Make a transaction
-    - Can I send some tokens?
-    - I want to send tokens
-    - I am testing sending
-    - can you show me how to send
-    - Sample memo
-    - sending this to my friend
-    - I am sending this to my friend
-    - ixo
-    - 100
-    - 100 IXO
-    - 100 tokens
-    - 100 tokens to my friend
-  
 - intent: knowMore
-  examples: |
-    - I want to know more
+  examples: |-
     - Can you tell me more about this?
-    - I want to know more about this
     - Do you know more about this?
+    - I want to know more about this
+    - I want to know more
     - Any more info?
     - Can you tell me more?
-    - I want to know more about this
+- intent: msgSend
+  examples: |-
+    - send tokens
+    - Send 100 IXO
+    - Sample memo
+    - 100 tokens
+    - 100 tokens to my friend
+    - sending this to my friend
+    - 100 IXO
+    - I would like to send
+    - Pay someone
+    - ixo
+    - Send 100 tokens
+    - I want to send tokens
+    - Can I send some tokens?
+    - msgSend 100 IXO
+    - I am testing sending
+    - send transaction
+    - can you show me how to send
+    - I am sending this to my friend
+    - 100
+    - Make a transaction
