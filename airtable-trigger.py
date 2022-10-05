@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import pickle
+import time
 from collections import ChainMap, OrderedDict
 from datetime import datetime
 from pathlib import Path
@@ -361,7 +362,7 @@ class AirtableConnector:
             if training_examples:
                 training_examples = training_examples.split("\n")
                 training_examples = [example.strip() for example in training_examples]
-                training_examples = list(set(training_examples))
+                training_examples = dict.fromkeys(training_examples).keys()
                 training_examples = list(filter(None, training_examples))
                 
                 obj = OrderedDict()
@@ -401,7 +402,8 @@ class AirtableConnector:
             if training_examples:
                 training_examples = training_examples.split("\n")
                 training_examples = [example.strip() for example in training_examples]
-                training_examples = list(set(training_examples))
+                # remove duplicates and maintain order
+                training_examples = dict.fromkeys(training_examples).keys()
                 training_examples = list(filter(None, training_examples))
                 
             obj = OrderedDict()
@@ -427,11 +429,27 @@ class AirtableConnector:
             
     def sync(self):
         
+        print(f"Trigger Started")
+        tik = time.time()
+        
+        print(f"Preparing the Domain file....")
         self.write_domain()
+        print(f"Domain file created")
+        
         # self.write_faq_training_data()
+        
+        print(f"Preparing the NLU file....")
         self.write_nlu()
+        print(f"NLU file created")
+        
+        print(f"Preparing the Stories file....")
         self.write_rules()
         self.write_stories()
+        print(f"Stories file created")
+        
+        tok = time.time()
+        
+        print(f"Trigger Completed in {tok-tik} seconds")
 
 
 connector = AirtableConnector('at.pickle')
