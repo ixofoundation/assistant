@@ -67,7 +67,7 @@ jobs:
   upload-model:
     name: Upload the trained model to Rasa X
     needs:
-    - build-model
+    - sync-data
     env:
       MODEL_DIRECTORY: "models"
 
