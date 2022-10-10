@@ -123,6 +123,7 @@ class AirtableConnector:
                     slot_mapping['action'] = record["fields"]["MappingValue"]
                 elif record["fields"]["MappingType"] == "from_intent":
                     slot_mapping["value"] = record["fields"]["MappingValue"]
+                    slot_mapping['intent'] = record["fields"]["IntentName"]
             
             if record["fields"].get("Form"):
                 slot_mapping["conditions"] = [{
@@ -222,9 +223,14 @@ class AirtableConnector:
             
             intent = story_step["fields"]["intent_name"]
             actions = story_step["fields"]["action_name"]
+            entities = story_step["fields"].get("entity_name")
             
-            stories[story_name].append({'intent': intent})
-            
+            if entities:
+                story_entities = entities
+                story_entities_result = [{entity: f"{entity}_value"} for entity in story_entities]
+                stories[story_name].append({'intent': intent, "entities": story_entities_result})
+            else:
+                stories[story_name].append({'intent': intent})
             for action in actions.split(', '):
                 stories[story_name].append({'action': action})
                 if action.count('_form'):
