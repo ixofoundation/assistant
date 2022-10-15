@@ -363,6 +363,11 @@ slots:
     - type: from_entity
       entity: state
     type: any
+  testentity:
+    mappings:
+    - type: from_entity
+      entity: testentity
+    type: any
   toAddress:
     mappings:
     - type: custom
@@ -397,7 +402,8 @@ slots:
     type: any
 responses:
   utter_affirm_agent_application:
-  - text: Please sign to submit your application to join this {entityType}
+  - text: |
+      Please sign to submit your application to join this {entityType}
     custom:
       data:
         value:
@@ -512,6 +518,7 @@ responses:
   - text: Did you know that IXO is a blockchain-based platform for social impact projects?
   - text: Here is a fun fact - IXO is a blockchain-based platform for social impact projects.
   - text: IXO is not just a blockchain-based platform for social impact projects, it is also a social impact project itself!
+  - text: Test Utterance for Demo
   utter_error_staking_insufficient_balance:
   - text: You don't have any available balance of IXO tokens to stake. Would you like to add IXO to your account?
     buttons:
