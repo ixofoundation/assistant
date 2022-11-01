@@ -147,7 +147,7 @@ class AirtableConnector:
         responses = {}
         
         for record in self.get_table("Utterances", view="Approved"):
-            print(f"Record value {record}")
+            print(f">>> {record}")
             response_name = record["fields"]["response"]
             
             if not responses.get(response_name):
@@ -160,7 +160,7 @@ class AirtableConnector:
                 
             if record["fields"].get("Buttons"):
                 temp = record["fields"]["Buttons"]
-                print(f"Record value {temp}")
+                print(f">>> fields Buttons {temp}")
                 response_value['buttons'] = yaml.safe_load(record["fields"]["Buttons"])
                 
             if record["fields"].get("Custom"):
