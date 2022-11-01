@@ -159,7 +159,8 @@ class AirtableConnector:
                 response_value['text'] = record["fields"]["Text"]
                 
             if record["fields"].get("Buttons"):
-                print(f"Record value {record["fields"]["Buttons"]}")
+                temp = record["fields"]["Buttons"]
+                print(f"Record value {temp}")
                 response_value['buttons'] = yaml.safe_load(record["fields"]["Buttons"])
                 
             if record["fields"].get("Custom"):
