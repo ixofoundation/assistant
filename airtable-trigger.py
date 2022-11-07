@@ -70,6 +70,7 @@ class AirtableConnector:
     
     def fetch_domain_intents(self):
         intents = []
+        print(f">>> in fetch_domain_intents")
         for record in self.get_table("Intents", view="Approved"):
             intents.append(
                 {
@@ -80,6 +81,7 @@ class AirtableConnector:
     
     def fetch_domain_entities(self):
         entities = []
+        print(f">>> in fetch_domain_entities")
         
         for record in self.get_table("Entities", view="Approved"):
             entities.append(record["fields"]["Name"])
@@ -89,6 +91,7 @@ class AirtableConnector:
     def fetch_domain_actions(self):
         
         actions = []
+        print(f">>> in fetch_domain_actions")
         
         for record in self.get_table("Actions", view="Approved", fields=["Name", "Type"]):
 
@@ -105,6 +108,7 @@ class AirtableConnector:
     
     def fetch_domain_slots(self):
         slots = {}
+        print(f">>> in fetch_domain_slots")
         
         
         for record in self.get_table("SlotMappings", view="Approved"):
@@ -145,6 +149,7 @@ class AirtableConnector:
 
     def fetch_domain_responses(self):
         responses = {}
+        print(f">>> in fetch_domain_responses")
         
         for record in self.get_table("Utterances", view="Approved"):
             print(f">>> {record}")
@@ -173,6 +178,7 @@ class AirtableConnector:
         
     def fetch_domain_forms(self):
         forms = {}
+        print(f">>> in fetch_domain_forms")
         
         for record in self.get_table("Forms", view="Approved"):
             
@@ -191,6 +197,7 @@ class AirtableConnector:
         return forms
     
     def fetch_domain_session_config(self):
+        print(f">>> in fetch_domain_session_config")
         
         return {}
     
